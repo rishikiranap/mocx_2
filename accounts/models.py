@@ -1,24 +1,23 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+import uuid
 
 
 class manager(BaseUserManager):
-    def create_user(self, email, username, password, first_name, last_name, phone):
-        if not email:
-            raise ValueError("users must have an email address")
-
-        if not username:
-                raise ValueError('users must have an username')
-
-        if not phone:
-            raise ValueError('users must have a phone number')
+    def create_user(self, email, username, password, **kwargs):
+        
+        if not kwargs:
+            phone=None     
+            first_name= None 
+            last_name = None  
 
         user = self.model(
-            email=self.normalize_email(email),
-            username=username,
-            first_name=first_name,
-            last_name=last_name,
-            phone=phone,
+        email=self.normalize_email(email),
+        username=username,
+        password=password,
+        phone=phone,
+        last_name=last_name,
+        first_name=first_name,
         )    
         user.set_password(password)
         user.save(using=self._db)
@@ -36,29 +35,28 @@ class manager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-class Account(AbstractBaseUser):
+class Account(AbstractBaseUser, PermissionsMixin):
+    uid=models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     email = models.EmailField( max_length=60, unique=True)
-    username = models.CharField(max_length=30, unique=True)
+    username = models.CharField(max_length=60, unique=False)
     date_joined = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(auto_now=True)
     is_admin = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
-    phone = models.CharField(max_length=10, default="none")
-    last_name = models.CharField(max_length=30 , default="none")
-    first_name = models.CharField(max_length=30 , default="none")
+    phone = models.CharField(max_length=10, blank=True, null=True)
+    last_name = models.CharField(max_length=30,blank=True, null=True)
+    first_name = models.CharField(max_length=30,blank=True, null=True)
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ['username','first_name','last_name','phone']
+    REQUIRED_FIELDS = ['username']
     
     objects = manager()
 
     def __str__(self):
         return self.email
 
-    def has_module_perms(self, app_label):
-        return True
 
 
 

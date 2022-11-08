@@ -4,6 +4,8 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
+from .models import Account
+from .backend import EmailBackend
 # Create your views here.
 
 def home(request):
@@ -11,10 +13,10 @@ def home(request):
 
 def signin(request):
     if request.method == "POST":
-        username = request.POST['username']
+        email = request.POST['email']
         pass1 = request.POST['pass1']
         #verfying user with backend DB
-        user = authenticate(username=username, password=pass1)
+        user = EmailBackend.authenticate(email=email, password=pass1)
     
         if user is not None:
             login(request, user)
@@ -40,16 +42,18 @@ def signup(request):
         email = request.POST['email']
         pass1 = request.POST['pass1']
         pass2 = request.POST['pass2']
-        Phone = request.POST.get('Phone')
+        phone = request.POST.get('Phone')
 
         #Creating User 
-        user = User.objects.create_user(username, email, pass1)
-        user.first_name = fname
-        user.last_name = lname
-        user.email = email
-        user.save()
-        messages.success(request, "Account Created")
-        return redirect('signin')
+        if pass1==pass2:
+            user = Account.objects.create_user(username, email, pass1)
+            user.first_name = fname
+            user.last_name = lname
+            user.email = email
+            user.phone=phone
+            user.save()
+            messages.success(request, "Account Created")
+            return redirect('signin')
     return render(request,"accounts/signup.html")
 
 def signout(request):
