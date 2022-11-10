@@ -7,9 +7,9 @@ class manager(BaseUserManager):
     def create_user(self, email, username, password, **kwargs):
         
         if not kwargs:
-            phone=None     
-            first_name= None 
-            last_name = None  
+            phone=None
+            first_name= None
+            last_name = None
 
         user = self.model(
         email=self.normalize_email(email),
@@ -18,8 +18,28 @@ class manager(BaseUserManager):
         phone=phone,
         last_name=last_name,
         first_name=first_name,
-        )    
+        ) 
         user.set_password(password)
+        user.save(using=self._db)
+        return user
+    
+    def create_interviewee(self, Occupation, Company, Institute_name, Year_of_study, State, City, **kwargs):
+        
+        if not kwargs:
+            Residence=None
+            Res_city=None
+
+            
+        user = self.model(
+        Occupation=Occupation,
+        Company=Company,
+        City=City,
+        State=State,
+        Institute_name=Institute_name,
+        Year_of_study=Year_of_study,
+        Residence=Residence,
+        Res_city=Res_city,
+        )
         user.save(using=self._db)
         return user
 
@@ -35,7 +55,7 @@ class manager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-class Account(AbstractBaseUser, PermissionsMixin):
+class BasicAccount(AbstractBaseUser, PermissionsMixin):
     uid=models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     email = models.EmailField( max_length=60, unique=True)
     username = models.CharField(max_length=60, unique=False)
@@ -45,7 +65,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
-    phone = models.CharField(max_length=10, blank=True, null=True)
+    phone = models.CharField(max_length=13, blank=True, null=True)
     last_name = models.CharField(max_length=30,blank=True, null=True)
     first_name = models.CharField(max_length=30,blank=True, null=True)
 
@@ -56,7 +76,32 @@ class Account(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
-
+    
+    
+class IntervieweeAccount(models.Model):
+    
+    user = models.OneToOneField(BasicAccount, on_delete=models.CASCADE, primary_key=True)
+    
+    Occupation = models.CharField(max_length=60, default="empty", blank=True)
+    Company = models.CharField(max_length=60, default="empty", blank=True)
+    Institute_name = models.CharField(max_length=60, default="empty", blank=True)
+    state = models.CharField(max_length=40, default="empty", blank=True)
+    city = models.CharField(max_length=40, default="empty", blank=True)
+    Year_of_study = models.CharField(max_length=60, default="empty", blank=True)
+    Residence = models.CharField(max_length=60, default="empty", blank=True)
+    Res_city = models.CharField(max_length=60, default="empty", blank=True)
+    
+    objects = manager()
+    
+    def __str__(self):
+        return self.Occupation
+    
+    
+class InterviewerAccount(models.Model):
+    pass
+    
+    
+    
 
 
 

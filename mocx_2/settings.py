@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-li4nb-_x$ya#b^c3u0$_s5fjyk-m#vpyz!1a6p4wc5e!v5&oi%
 DEBUG = True
 
 ALLOWED_HOSTS = []
-AUTH_USER_MODEL='accounts.Account'
+AUTH_USER_MODEL='accounts.BasicAccount'
 
 # Application definition
 
@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'mocx_2.wsgi.application'
 DATABASES =  {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'postgres-1', 
+            'NAME': 'postgres-2', 
             'USER': 'postgres',
             'PASSWORD': 'admin',
             'HOST': '127.0.0.1',
