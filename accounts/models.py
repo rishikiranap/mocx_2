@@ -23,18 +23,16 @@ class manager(BaseUserManager):
         user.save(using=self._db)
         return user
     
-    def create_interviewee(self, Occupation, Company, Institute_name, Year_of_study, State, City, **kwargs):
+    def create_interviewee(self, Occupation, Company, Institute_name, **kwargs):
         
         if not kwargs:
             Residence=None
             Res_city=None
+            Year_of_study=None
 
-            
         user = self.model(
         Occupation=Occupation,
         Company=Company,
-        City=City,
-        State=State,
         Institute_name=Institute_name,
         Year_of_study=Year_of_study,
         Residence=Residence,
@@ -75,21 +73,20 @@ class BasicAccount(AbstractBaseUser, PermissionsMixin):
     objects = manager()
 
     def __str__(self):
-        return self.email
+        return (self.email) 
     
     
 class IntervieweeAccount(models.Model):
-    
-    user = models.OneToOneField(BasicAccount, on_delete=models.CASCADE, primary_key=True)
-    
-    Occupation = models.CharField(max_length=60, default="empty", blank=True)
-    Company = models.CharField(max_length=60, default="empty", blank=True)
-    Institute_name = models.CharField(max_length=60, default="empty", blank=True)
-    state = models.CharField(max_length=40, default="empty", blank=True)
-    city = models.CharField(max_length=40, default="empty", blank=True)
-    Year_of_study = models.CharField(max_length=60, default="empty", blank=True)
-    Residence = models.CharField(max_length=60, default="empty", blank=True)
-    Res_city = models.CharField(max_length=60, default="empty", blank=True)
+    uid = models.OneToOneField(BasicAccount, on_delete=models.CASCADE, primary_key=True)
+
+    Occupation = models.CharField(max_length=60, default="empty", blank=True, null=True)
+    Company = models.CharField(max_length=60, default="empty", blank=True, null=True)
+    Institute_name = models.CharField(max_length=60, default="empty", blank=True, null=True)
+    state = models.CharField(max_length=40, default="empty", blank=True, null=True)
+    city = models.CharField(max_length=40, default="empty", blank=True, null=True)
+    Year_of_study = models.CharField(max_length=60, default="empty", blank=True, null=True)
+    Residence = models.CharField(max_length=60, default="empty", blank=True, null=True)
+    Res_city = models.CharField(max_length=60, default="empty", blank=True, null=True)
     
     objects = manager()
     
