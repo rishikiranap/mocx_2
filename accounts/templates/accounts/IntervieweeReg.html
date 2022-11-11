@@ -12,7 +12,10 @@
     <form action="/IntervieweeReg" method="post">
        {% csrf_token %} 
         <label for="">Occupation</label>
-        <input type="text" id="Occupation" name="Occupation" placeholder="Student/Working" required>
+        <select type="radio" id="Occupation" name="Occupation" required>
+            <option  id="Occupation", name='STUDENT'>STUDENT</option>
+            <option id="Occupation", name='JOB'>JOB</option>
+        </select>    
         <br>
         <label for="">Company</label>
         <input type="text" id="Company" name="Company" placeholder="Company">

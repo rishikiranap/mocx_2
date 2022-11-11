@@ -54,9 +54,9 @@ class manager(BaseUserManager):
         return user
 
 class BasicAccount(AbstractBaseUser, PermissionsMixin):
-    uid=models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
+    uid_id=models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     email = models.EmailField( max_length=60, unique=True)
-    username = models.CharField(max_length=60, unique=False)
+    username = models.CharField(max_length=60, unique=False, null=True, blank=True)
     date_joined = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(auto_now=True)
     is_admin = models.BooleanField(default=False)
@@ -76,11 +76,20 @@ class BasicAccount(AbstractBaseUser, PermissionsMixin):
         return (self.email) 
     
     
+OCCUPATION=(
+    ('STUDENT', 'STUDENT'),
+    ('JOB', 'JOB')
+)
+    
 class IntervieweeAccount(models.Model):
+    
+    #Connecting Basic-Account Table with Interviewee-Account
+    
     uid = models.OneToOneField(BasicAccount, on_delete=models.CASCADE, primary_key=True)
-
-    Occupation = models.CharField(max_length=60, default="empty", blank=True, null=True)
-    Company = models.CharField(max_length=60, default="empty", blank=True, null=True)
+    
+    #Other fields in Interviewee-Account
+    Occupation = models.CharField(max_length=60, default="empty", blank=True, null=True, choices=OCCUPATION)
+    Company = models.CharField(max_length=60, default="empty")
     Institute_name = models.CharField(max_length=60, default="empty", blank=True, null=True)
     state = models.CharField(max_length=40, default="empty", blank=True, null=True)
     city = models.CharField(max_length=40, default="empty", blank=True, null=True)

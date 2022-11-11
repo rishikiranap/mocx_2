@@ -69,12 +69,14 @@ def IntervieweeReg(request):
         
         #Accsessing the IntervieweeAccount Table
         
-        user = IntervieweeAccount.objects.create_interviewee(Occupation, Company, Institute_name)
+        user = IntervieweeAccount.objects.create_interviewee(Occupation=Occupation, Company=Company, Institute_name=Institute_name)
         
         #Pushing Into intervieweeAccount Table
         
         user.Occupation = Occupation
         user.Company = Company
+        user.City=City
+        user.State=State
         user.Institute_name = Institute_name
         user.Year_of_study = Year_of_study
         user.Residence = Residence
