@@ -9,6 +9,7 @@ from .backend import EmailBackend
 # Create your views here.
 
 def home(request):
+    #Check if user has filled is details else redirect to intervieweereg or interviewerreg 
     return render(request,"accounts/index.html")
 
 def signin(request):
@@ -22,7 +23,7 @@ def signin(request):
             login(request, user)
             fname = user.first_name
             return render(request, "accounts/index.html", {"fname": fname})
-        
+                
         else:
             messages.error(request, "Invalid User")
             return redirect('home')
@@ -46,16 +47,20 @@ def signup(request):
 
         #Creating User 
         if pass1==pass2:
-            user = BasicAccount.objects.create_user(username, email, pass1)
+            user = BasicAccount.objects.create_user(email, username, pass1)
             user.first_name = fname
             user.last_name = lname
-            user.email = email
             user.phone=phone
             user.save()
+            login(request, user)
             return redirect('IntervieweeReg')
     return render(request,"accounts/signup.html")
 
+#Show these details if interviewee is logged in
+#use @login_required decorated to check if user is logged in
 def IntervieweeReg(request):
+    
+    interviewee = IntervieweeAccount(uid = request.user)
     
     if request.method == "POST":
         Occupation = request.POST['Occupation']
@@ -67,23 +72,20 @@ def IntervieweeReg(request):
         Residence = request.POST['Residence']
         Res_city = request.POST['Res_city']
         
-        #Accsessing the IntervieweeAccount Table
-        
-        user = IntervieweeAccount.objects.create_interviewee(Occupation=Occupation, Company=Company, Institute_name=Institute_name)
-        
+         
         #Pushing Into intervieweeAccount Table
-        
-        user.Occupation = Occupation
-        user.Company = Company
-        user.City=City
-        user.State=State
-        user.Institute_name = Institute_name
-        user.Year_of_study = Year_of_study
-        user.Residence = Residence
-        user.Res_city = Res_city
-        user.save()
+         
+        interviewee.Occupation = Occupation
+        interviewee.Company = Company
+        interviewee.City=City
+        interviewee.State=State
+        interviewee.Institute_name = Institute_name
+        interviewee.Year_of_study = Year_of_study
+        interviewee.Residence = Residence
+        interviewee.Res_city = Res_city
+        interviewee.save()
         return redirect("signin")
-    return render(request,"accounts/IntervieweeReg.html")
+    return render(request,"accounts/IntervieweeReg.html", context = {"user":request.user.first_name} )
 
         
 

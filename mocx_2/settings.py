@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'mocx_2.wsgi.application'
 DATABASES =  {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'postgres-3', 
+            'NAME': 'postgres-5', 
             'USER': 'postgres',
             'PASSWORD': 'admin',
             'HOST': '127.0.0.1',
