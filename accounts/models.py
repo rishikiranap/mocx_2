@@ -23,23 +23,6 @@ class manager(BaseUserManager):
         user.save(using=self._db)
         return user
     
-    def create_interviewee(self, Occupation, Company, Institute_name, **kwargs):
-        
-        if not kwargs:
-            Residence=None
-            Res_city=None
-            Year_of_study=None
-
-        user = self.model(
-        Occupation=Occupation,
-        Company=Company,
-        Institute_name=Institute_name,
-        Year_of_study=Year_of_study,
-        Residence=Residence,
-        Res_city=Res_city,
-        )
-        user.save(using=self._db)
-        return user
 
     def create_superuser(self, email, username, password):
         user=self.create_user(
@@ -84,7 +67,7 @@ OCCUPATION=(
 class IntervieweeAccount(models.Model):
     
     #Connecting Basic-Account Table with Interviewee-Account
-    
+     
     uid = models.OneToOneField(BasicAccount, on_delete=models.CASCADE, primary_key=True)
     
     #Other fields in Interviewee-Account
@@ -96,9 +79,8 @@ class IntervieweeAccount(models.Model):
     Year_of_study = models.CharField(max_length=60, default="empty", blank=True, null=True)
     Residence = models.CharField(max_length=60, default="empty", blank=True, null=True)
     Res_city = models.CharField(max_length=60, default="empty", blank=True, null=True)
-    
-    objects = manager()
-    
+
+
     def __str__(self):
         return self.Occupation
     
