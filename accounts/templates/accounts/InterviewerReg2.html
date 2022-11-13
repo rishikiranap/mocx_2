@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+</head>
+<body>
+    <h2>More Details Please!!</h2>
+
+    <form action="/InterviewerReg2" method="post">
+       {% csrf_token %} 
+
+        <label for="">Age</label>
+        <input type="text" id="age" name="age" placeholder="Age" required>
+         <br>
+        <label for=''>experience</label>
+        <input type="text" id='experience' name='experience' placeholder="experience" required>
+        <br>
+        <label for=''>Price</label>
+        <input type='text' id='price' name='price' placeholder="How munch you charge per mock interview?" required>
+        <br>
+        <label >About Me</label>
+            <textarea class="form-control" id="about_me" name="about_me" rows="3" placeholder="Tell about your Education Qualifications, Certifications...." maxlength="200" required></textarea>
+        <br>
+        <label >LinkedIn Profile</label>
+        <input type="url" name="linkedin" id="linkedin" name="linkedin" placeholder="Paste your profile link">
+        <br>
+        <button type="submit">submit</button>
+    </form>
+</body>
+</html>

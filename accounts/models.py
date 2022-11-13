@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, AbstractUser
 import uuid
 
 
@@ -22,7 +22,7 @@ class manager(BaseUserManager):
         user.set_password(password)
         user.save(using=self._db)
         return user
-    
+            
 
     def create_superuser(self, email, username, password):
         user=self.create_user(
@@ -71,14 +71,14 @@ class IntervieweeAccount(models.Model):
     uid = models.OneToOneField(BasicAccount, on_delete=models.CASCADE, primary_key=True)
     
     #Other fields in Interviewee-Account
-    Occupation = models.CharField(max_length=60, default="empty", blank=True, null=True, choices=OCCUPATION)
-    Company = models.CharField(max_length=60, default="empty")
-    Institute_name = models.CharField(max_length=60, default="empty", blank=True, null=True)
-    state = models.CharField(max_length=40, default="empty", blank=True, null=True)
-    city = models.CharField(max_length=40, default="empty", blank=True, null=True)
-    Year_of_study = models.CharField(max_length=60, default="empty", blank=True, null=True)
-    Residence = models.CharField(max_length=60, default="empty", blank=True, null=True)
-    Res_city = models.CharField(max_length=60, default="empty", blank=True, null=True)
+    Occupation = models.CharField(max_length=60, blank=True, null=True, choices=OCCUPATION)
+    Company = models.CharField(max_length=60)
+    Institute_name = models.CharField(max_length=60, blank=True, null=True)
+    State = models.CharField(max_length=40, blank=True, null=True)
+    City = models.CharField(max_length=40, blank=True, null=True)
+    Year_of_study = models.CharField(max_length=60, blank=True, null=True)
+    Residence = models.CharField(max_length=60, blank=True, null=True)
+    Res_city = models.CharField(max_length=60, blank=True, null=True)
 
 
     def __str__(self):
@@ -86,7 +86,23 @@ class IntervieweeAccount(models.Model):
     
     
 class InterviewerAccount(models.Model):
-    pass
+    
+    uid = models.OneToOneField(BasicAccount, on_delete=models.CASCADE, primary_key=True)
+    
+    Age = models.CharField(max_length=10, null=True, blank=True)
+    Experience = models.CharField(max_length=40, null=True, blank=True)
+    Price = models.CharField(max_length=30, null=True, blank=True)
+    About_me = models.CharField(max_length=200, null=True, blank=True)
+    Linkedin = models.URLField(max_length=60, blank=True)
+    
+ 
+    
+    def __str__(self):
+        return self.Experience
+    
+    
+    
+
     
     
     
