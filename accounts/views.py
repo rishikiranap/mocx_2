@@ -6,6 +6,8 @@ from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
 from .models import BasicAccount,IntervieweeAccount,InterviewerAccount
 from .backend import EmailBackend
+from mocx_2 import settings
+from django.core.mail import send_mail
 # Create your views here.
 
 def home(request):
@@ -57,6 +59,14 @@ def signup(request):
         pass1 = request.POST['pass1']
         pass2 = request.POST['pass2']
         phone = request.POST.get('Phone')
+        
+        if BasicAccount.objects.filter(email=email):
+            messages.error(request, "email already exist! Please try some other email")
+            return redirect('home')
+            
+        if pass1 != pass2:
+            messages.error(request,"Password does not match")
+            return redirect('signup')
 
         #Creating User 
         if pass1==pass2:
@@ -65,6 +75,22 @@ def signup(request):
             user.last_name = lname
             user.phone=phone
             user.save()
+            
+            # Welcome Email to Registered User
+            
+            subject = "Welcome to MocX!"
+            email_sub = "Account Activation for " + user.first_name
+            message = "Hello" + ' ' + user.first_name + '!! \n' +'Welcome to MocX!! \n Hope you have some great things  done with our application to grow yourself!! \n\n Thanking You\n Team MocX' 
+            from_email = settings.EMAIL_HOST_USER
+            to_list = [user.email]
+            send_mail(subject, message, from_email, to_list, fail_silently=True) #Send mail to the Registered Users!
+            
+            send_mail( # send one to ourselves as well when a new user registers
+                         email_sub,
+                         "has registered for an account, see subject",
+                         'noreply@mocx.in',
+                        ['mocx.mr@gmail.com'] 
+                     )
             login(request, user)
             return redirect('IntervieweeReg')
     return render(request,"accounts/signup.html")
@@ -111,6 +137,14 @@ def InterviewerReg1(request):
         pass1 = request.POST['pass1']
         pass2 = request.POST['pass2']
         phone = request.POST.get('Phone')
+        
+        if BasicAccount.objects.filter(email=email):
+            messages.error(request, "email already exist! Please try some other email")
+            return redirect('home')
+            
+        if pass1 != pass2:
+            messages.error(request,"Password does not match")
+            return redirect('InterviewerReg1')
 
         #Creating User 
         if pass1==pass2:
