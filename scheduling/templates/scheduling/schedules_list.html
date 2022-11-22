@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>HTML input datetime</title>
+   </head>
+   <body>
+    <button type="submit"> <a href="/add_slot">Back</a></button>
+    <button type="submit"> <a href="/signout">Signout</a></button>
+     {% for item in all %}
+       <p>{{ item }}</p>
+      <button><a href="/delete/{{item.id}}">Delete</a></button>
+       <hr>
+     {% endfor %}
+      </form>
+   </body>
+</html>

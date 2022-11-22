@@ -8,6 +8,7 @@
 </head>
 <body>
 
+   
     <!--if user is not authenticated-->
 
      {% for message in messages %}
@@ -19,11 +20,15 @@
      {% endfor %}
      <!--if user is authenticated-->
 
-    {% if user.is_authenticated %}
+    {% if user.is_authenticated %} 
+
     <h3>hello Welcome {{fname}} </h3>
+  
+    
+    {% if user.is_interviewer %} 
+    <button type="submit"> <a href="/add_slot">Add slot</a></button>
+    {% endif %}
     <button type="submit"> <a href="/signout">Signout</a></button>
-
-
     {% else %}
     <button type="submit"> <a href="/signup">Signup</a></button>
     <button type="submit"> <a href="/signin">Signin</a></button>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>HTML input datetime</title>
+   </head>
+   <body>
+      <form action = "/add_slot" method = "POST">
+         {% csrf_token %} 
+         Details:<br><br>
+         Interview Date and Time<br><input type = "datetime-local" name = "Slot_TimeDate"><br>
+         <input type = "submit" value = "Add">
+         <button type="submit"> <a href="/schedules_list">My Schedules</a></button>
+         <button type="submit"> <a href="/signout">Signout</a></button>
+      </form>
+   </body>
+</html>

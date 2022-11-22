@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+</head>
+<body>
+    <h2>One Step Ahead!!</h2>
+
+    <form action="/IntervieweeReg" method="post">
+       {% csrf_token %} 
+        <label for="">Occupation</label>
+        <select type="radio" id="Occupation" name="Occupation" required>
+            <option  id="Occupation", name='STUDENT'>STUDENT</option>
+            <option id="Occupation", name='JOB'>JOB</option>
+        </select>    
+        <br>
+        <label for="">Company</label>
+        <input type="text" id="Company" name="Company" placeholder="Company">
+        <br>
+        <label for="">Institute_name</label>
+        <input type="text" id="Institute_name" name="Institute_name" placeholder="College name" required>
+        <br>
+        <label for="">Year_of_study</label>
+        <input type="text" id="Year_of_study" name="Year_of_study" placeholder="Year of study" required>
+        <br>
+        <label for="">State</label>
+        <input type="text" id="State" name="State" placeholder="State" required>
+        <br>
+        <label for="">City</label>
+        <input type="text" id="City" name="City" placeholder="City" required>
+        <br>
+        <label for="">Residence</label>
+        <input type="text" id="Residence" name="Residence" placeholder="Location Address">
+        <br>
+        <label for="">City</label>
+        <input type="text" id="Res_city" name="Res_city" placeholder="Your Location City" required>
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
