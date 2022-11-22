@@ -21,8 +21,12 @@
      <!--if user is authenticated-->
 
     {% if user.is_authenticated %} 
+    <br>
 
-    <h3>hello Welcome {{user.first_name}} </h3>
+    <h2>Hello Welcome {{user.first_name}} </h2>
+    <br>
+    <br>
+    <hr>
   
 <!-- If the user is Interviewer and not Interviewee Show add slots -->  
     {% if user.is_interviewer %} 
@@ -33,13 +37,14 @@
 <!-- If the user is not Interviewer and is Interviewee Show available slots -->
 
     {% if not user.is_interviewer%}
+    <h3>Available Slots</h3>
     {% for item in all %}
-    <p>{{item.uid.uid.first_name}}</p>
-    <p>{{item.uid.Experience}}</p>
+    <p>Name:{{item.uid.uid.first_name}}</p>
+    <p>Exp:{{item.uid.Experience}}</p>
     <p>{{item.Slot_time}}</p>
-    <button type="submit"> <a>Book</a></button>
     <br>
-    
+    <button type="submit"> <a>Book</a></button>
+    <hr>
     {% endfor %}
     <button type="submit"> <a href="/signout">Signout</a></button>
     {% endif %}

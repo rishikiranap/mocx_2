@@ -7,9 +7,9 @@
     <button type="submit"> <a href="/add_slot">Back</a></button>
     <button type="submit"> <a href="/signout">Signout</a></button>
      {% for item in all %}
-       <p>{{ item }}</p>
+       <p>{{ item.Slot_time }}</p>
       <button><a href="/delete/{{item.id}}">Delete</a></button>
-       <hr>
+      <hr>
      {% endfor %}
       </form>
    </body>

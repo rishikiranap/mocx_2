@@ -14,7 +14,7 @@ from django.core.mail import send_mail
 @login_required
 def add_slot(request):
     if request.method == 'POST':
-       
+       # TODO:Need to covert into IST from UTC !!!!!
         Slot = request.POST['Slot_TimeDate']
         #Getting Uid from InterviewerAccount linked with BasicAccount
         interviewer = InterviewerAccount.objects.get(uid = request.user)
@@ -44,7 +44,7 @@ def add_slot(request):
 #List all the Slots addded by the interviewer 
 @login_required
 def schedules_list(request):
-    schedules = Schedules.objects.all
+    schedules = Schedules.objects.filter(uid_id=request.user.uid_id)
     return render(request,"scheduling/schedules_list.html",{'all':schedules})
 
 #Deleting The Created Slots By Interviewer By Deleting with reference to id(pk) of the Slot created.
