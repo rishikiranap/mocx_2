@@ -3,6 +3,7 @@ from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib import messages
+from scheduling.models import Schedules
 from django.contrib.auth import authenticate,login,logout
 from .models import BasicAccount,IntervieweeAccount,InterviewerAccount
 from .backend import EmailBackend
@@ -11,6 +12,7 @@ from django.core.mail import send_mail
 # Create your views here.
 
 def home(request):
+    
      #Check The Interviewer filled all the deatils in InterviewerReg2
      #Better to Use boolean here!!!!!
     if IntervieweeAccount.Occupation is None:
@@ -35,9 +37,9 @@ def signin(request):
     
         if user is not None:
             login(request, user)
-            fname = user.first_name
-            check = user.is_interviewer
-            return render(request, "accounts/index.html", {"fname": fname})
+            schdeules = Schedules.objects.all
+            
+            return render(request, "accounts/index.html",{'all':schdeules})
                 
         else:
             messages.error(request, "Invalid User")
