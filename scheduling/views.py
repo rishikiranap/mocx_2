@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-import pytz
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from accounts.models import InterviewerAccount,BasicAccount
@@ -7,6 +7,9 @@ from .models import Schedules
 from accounts.backend import EmailBackend
 from mocx_2 import settings
 from django.core.mail import send_mail
+from datetime import datetime,timezone
+import datetime
+from pytz import timezone
 
 
 # Create your views here.
@@ -16,12 +19,28 @@ def add_slot(request):
     if request.method == 'POST':
        # TODO:Need to covert into IST from UTC !!!!!
         Slot = request.POST['Slot_TimeDate']
+        
+    
         #Getting Uid from InterviewerAccount linked with BasicAccount
         interviewer = InterviewerAccount.objects.get(uid = request.user)
         add_slot = Schedules(uid = interviewer)
         add_slot.Slot_time = Slot
-        add_slot.change_to_added()
-        add_slot.save()
+        
+        
+        #Gettimg the local time 
+        current_time = datetime.datetime.now()
+        
+        #Formating the local time as per input slot time and date formate
+        time_now = current_time.strftime("%Y-%m-%dT%H:%M")
+        print(time_now)
+        print(Slot)
+        if Slot < time_now:
+            print("error")
+            messages.error(request,"Selected time and date is Past")
+            return redirect('add_slot')
+        else:    
+         add_slot.change_to_added()
+         add_slot.save()
         
         #Send email when new time slot is added by the Interviewer
         
