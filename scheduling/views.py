@@ -34,13 +34,14 @@ def add_slot(request):
         time_now = current_time.strftime("%Y-%m-%dT%H:%M")
         print(time_now)
         print(Slot)
+        #Interviewer cannot Select a Slot which is outdated
         if Slot < time_now:
             print("error")
             messages.error(request,"Selected time and date is Past")
-            return redirect('add_slot')
-        else:    
-         add_slot.change_to_added()
-         add_slot.save()
+            return None
+        
+        add_slot.change_to_added()
+        add_slot.save()
         
         #Send email when new time slot is added by the Interviewer
         
@@ -60,10 +61,16 @@ def add_slot(request):
             
         #return redirect("signin")
     return render(request,"scheduling/add_slot.html")
+
+
 #List all the Slots addded by the interviewer 
 @login_required
 def schedules_list(request):
     schedules = Schedules.objects.filter(uid_id=request.user.uid_id)
+    print(schedules)
+    #new = schedules.strftime("%Y-%m-%dT%H:%M")
+    #if schedules < time_now:
+        #delete(schedules)
     return render(request,"scheduling/schedules_list.html",{'all':schedules})
 
 #Deleting The Created Slots By Interviewer By Deleting with reference to id(pk) of the Slot created.

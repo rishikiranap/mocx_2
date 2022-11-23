@@ -6,7 +6,7 @@
    <body>
       <form action = "/add_slot" method = "POST">
          {% csrf_token %} 
-         Details:<br><br>
+         Please add a Slot<br><br>
          Interview Date and Time<br><input type = "datetime-local" name = "Slot_TimeDate"><br>
          <input type = "submit" value = "Add">
          <button type="submit"> <a href="/schedules_list">My Schedules</a></button>
