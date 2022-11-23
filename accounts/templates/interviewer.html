@@ -1,0 +1,24 @@
+
+{% block content %}
+    <table>
+        <thead>
+            <tr>
+                <td>UID</td>
+                <td>Name</td>
+                <td>Experience</td>
+                <td>Domain</td>
+                <td>Linkedin</td>
+            </tr>
+        </thead>
+            {% for profile in all_interviewer %}
+            <tr>
+                <td>{{ profile.uid }}</td>
+                <td>{{ profile.name }}</td>
+                <td>{{ profile.experience }}</td>
+                <td>{{ profile.domain }}</td>
+                <td>{{ profile.linkedin }}</td>
+            </tr>
+            {% endfor %}
+
+    </table>
+{% endblock %}

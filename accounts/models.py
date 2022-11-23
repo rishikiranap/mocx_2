@@ -1,6 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, AbstractUser
 import uuid
+import django_filters
+
+
+
+
 
 
 class manager(BaseUserManager):
@@ -56,12 +61,21 @@ class BasicAccount(AbstractBaseUser, PermissionsMixin):
     objects = manager()
 
     def __str__(self):
-        return (self.email) 
+        return str(self.email) 
     
     
 OCCUPATION=(
     ('STUDENT', 'STUDENT'),
     ('JOB', 'JOB')
+)
+
+
+DOMAIN=(
+    ('IELTS','IELTS'),
+    ('DSA','DSA'),
+    ('FULL STACK','FULL STACK'),
+    ('AI AND DS','AI and DS'),
+    ('CYBERSECURITY AND NETWORKING','CYBERSECURITY AND NETWORKING')    
 )
     
 class IntervieweeAccount(models.Model):
@@ -92,6 +106,10 @@ class InterviewerAccount(models.Model):
     Age = models.CharField(max_length=10, null=True, blank=True)
     Experience = models.CharField(max_length=40, null=True, blank=True)
     Price = models.CharField(max_length=30, null=True, blank=True)
+    #Adding the domain in the feild
+    Domain = models.CharField(max_length=60, blank=True, null=True, choices=DOMAIN)
+    #Topics are added later
+   
     About_me = models.CharField(max_length=200, null=True, blank=True)
     Linkedin = models.URLField(max_length=60, blank=True)
     

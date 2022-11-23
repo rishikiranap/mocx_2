@@ -21,6 +21,34 @@
 
     {% if user.is_authenticated %}
     <h3>hello Welcome {{fname}} </h3>
+    
+    <table border="2px">
+        <thead>
+            <tr>
+                
+                <td>Name</td>
+                <td>Experience</td>
+                <td>Domain</td>
+                <td>Linkedin</td>
+            </tr>
+        </thead>
+            {% for profile in all_users_profile %}
+            <tr>
+                
+                <td>{{ profile.uid.first_name }}</td>
+                
+                <td>{{ profile.Experience }}</td>
+                <td>{{ profile.Domain }}</td>
+                <td>{{ profile.Linkedin }}</td>
+            </tr>
+            {% endfor %}
+
+    </table>
+    
+
+
+
+    
     <button type="submit"> <a href="/signout">Signout</a></button>
 
 

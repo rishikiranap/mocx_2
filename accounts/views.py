@@ -6,9 +6,14 @@ from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
 from .models import BasicAccount,IntervieweeAccount,InterviewerAccount
 from .backend import EmailBackend
+from .filters import Listingfilter
 # Create your views here.
 
+
+
 def home(request):
+    all_users_profiles=InterviewerAccount.objects.all()
+    print(all_users_profiles)
     
     if IntervieweeAccount.Occupation is None:
         return redirect('IntervieweeReg')
@@ -19,9 +24,11 @@ def home(request):
     elif IntervieweeAccount.Residence is None:
         return redirect('IntervieweeReg')
     elif IntervieweeAccount.Res_city is None:
-        return redirect('IntervieweeReg')
-    else:
-     return render(request,"accounts/index.html")
+        return redirect('IntervieweeReg')          
+    return render(request,"accounts/index.html",{'all_users_profile':all_users_profiles})
+        
+    
+    
     
    
 
@@ -35,11 +42,13 @@ def signin(request):
         if user is not None:
             login(request, user)
             fname = user.first_name
-            return render(request, "accounts/index.html", {"fname": fname})
+            return redirect('home')
+            
                 
         else:
             messages.error(request, "Invalid User")
-            return redirect('home')
+            return render(request, "accounts/signin.html", {"fname": fname})
+           
     return render(request,"accounts/signin.html")
 
 def signup(request):
@@ -131,6 +140,7 @@ def InterviewerReg2(request):
         age = request.POST['age']
         experience = request.POST['experience']
         price = request.POST['price']
+        domain = request.POST['domain']
         about_me = request.POST['about_me']
         linkedin = request.POST['linkedin']
         
@@ -138,6 +148,7 @@ def InterviewerReg2(request):
         interviewer.Age = age
         interviewer.Experience = experience
         interviewer.Price = price
+        interviewer.Domain = domain
         interviewer.About_me = about_me
         interviewer.Linkedin = linkedin
         interviewer.save()
