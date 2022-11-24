@@ -97,6 +97,8 @@ class InterviewerAccount(models.Model):
     Price = models.CharField(max_length=30, null=True, blank=True)
     About_me = models.CharField(max_length=200, null=True, blank=True)
     Linkedin = models.URLField(max_length=60, blank=True)
+    profile_image = models.ImageField(upload_to='pics', default='dafault.svg')
+
    
     
     def __str__(self):
