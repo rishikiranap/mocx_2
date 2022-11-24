@@ -4,6 +4,9 @@
       <title>HTML input datetime</title>
    </head>
    <body>
+      {% for message in messages%}
+         <h3> {{message}} </h3>
+      {% endfor %}
       <form action = "/add_slot" method = "POST">
          {% csrf_token %} 
          Please add a Slot<br><br>

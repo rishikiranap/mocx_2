@@ -37,8 +37,11 @@ def add_slot(request):
         #Interviewer cannot Select a Slot which is outdated
         if Slot < time_now:
             print("error")
-            messages.error(request,"Selected time and date is Past")
-            return None
+            messages.error(request,"error::Selected time and date is Past!!!")
+            return redirect('add_slot')
+        elif Slot == time_now:
+            messages.error(request,"error::Action cannot be performed!!")
+            return redirect('add_slot')
         
         add_slot.change_to_added()
         add_slot.save()

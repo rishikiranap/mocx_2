@@ -156,6 +156,20 @@ def InterviewerReg1(request):
             user.phone=phone
             user.is_interviewer=True
             user.save()
+            #Send Mail when interviewer creates an account!!
+            subject = "Welcome to MocX!"
+            email_sub = "Account Activation for " + user.first_name
+            message = "Hello" + ' ' + user.first_name + '!! \n' +'Welcome to MocX!! \n Hope you have some great things  done with our application to grow yourself!! \n\n Thanking You\n Team MocX' 
+            from_email = settings.EMAIL_HOST_USER
+            to_list = [user.email]
+            send_mail(subject, message, from_email, to_list, fail_silently=True) #Send mail to the Registered Users!
+            
+            send_mail( # send one to ourselves as well when a new user registers
+                         email_sub,
+                         "has registered for an account, see subject",
+                         'noreply@mocx.in',
+                        ['mocx.mr@gmail.com'] 
+                     )
             login(request, user)
             return redirect('InterviewerReg2')
     return render(request,"accounts/InterviewerReg1.html")
