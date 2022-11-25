@@ -201,3 +201,8 @@ def signout(request):
     logout(request)
     messages.success(request, "logged out!")
     return redirect("home")
+
+def view(request):
+    details = Schedules.objects.all
+    
+    return render(request,"accounts/view.html",{"details":details})

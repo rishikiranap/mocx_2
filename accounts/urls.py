@@ -10,5 +10,6 @@ urlpatterns = [
    path('InterviewerReg2',views.InterviewerReg2, name='InterviewerReg2'),
    path('signin',views.signin, name="signin"),
    path('signout',views.signout, name="signout"),
+   path('view',views.view, name="view"),
 
 ]

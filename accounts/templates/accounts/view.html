@@ -1,0 +1,16 @@
+<h3>Interviewer Profile</h3>
+{% for item in details%}
+<p>First Name:{{item.uid.uid.first_name}}</p>
+<p>Last Name:{{item.uid.uid.last_name}}</p>
+<p>Email Address:{{item.uid.uid.email}}</p>
+<p>Experience:{{item.uid.Experience}}</p>
+<p>Price:{{item.uid.Price}}</p>
+<p>About:{{item.uid.About_me}}</p>
+<hr>
+{%for item in details%}
+<p>Available Slots{{item.Slot_time}}</p>
+<button type="submit"> <a>book</a></button>
+{%endfor%}
+<hr>
+<hr>
+{%endfor%}

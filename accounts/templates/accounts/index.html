@@ -41,9 +41,11 @@
     {% for item in all %}
     <p>Name:{{item.uid.uid.first_name}}</p>
     <p>Exp:{{item.uid.Experience}}</p>
-    <p>{{item.Slot_time}}</p>
+    {% for item in all %}
+    <p>Available Slot:{{item.Slot_time}}</p>
+    {%endfor%}
     <br>
-    <button type="submit"> <a>Book</a></button>
+    <button type="submit"> <a href="/view">View Profile</a></button>
     <hr>
     {% endfor %}
     <button type="submit"> <a href="/signout">Signout</a></button>

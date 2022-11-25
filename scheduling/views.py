@@ -19,7 +19,7 @@ def add_slot(request):
     if request.method == 'POST':
        # TODO:Need to covert into IST from UTC !!!!!
         Slot = request.POST['Slot_TimeDate']
-        
+    
     
         #Getting Uid from InterviewerAccount linked with BasicAccount
         interviewer = InterviewerAccount.objects.get(uid = request.user)
@@ -32,8 +32,7 @@ def add_slot(request):
         
         #Formating the local time as per input slot time and date formate
         time_now = current_time.strftime("%Y-%m-%dT%H:%M")
-        print(time_now)
-        print(Slot)
+     
         #Interviewer cannot Select a Slot which is outdated
         if Slot < time_now:
             print("error")
@@ -71,8 +70,8 @@ def add_slot(request):
 def schedules_list(request):
     schedules = Schedules.objects.filter(uid_id=request.user.uid_id)
     print(schedules)
-    #new = schedules.strftime("%Y-%m-%dT%H:%M")
-    #if schedules < time_now:
+    
+    #if schedules.Slot_time < time_now:
         #delete(schedules)
     return render(request,"scheduling/schedules_list.html",{'all':schedules})
 
