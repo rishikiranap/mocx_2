@@ -3,6 +3,8 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 import uuid
 
 
+
+
 class manager(BaseUserManager):
     def create_user(self, email, username, password, **kwargs):
         
@@ -91,7 +93,6 @@ class IntervieweeAccount(models.Model):
 class InterviewerAccount(models.Model):
     
     uid = models.OneToOneField(BasicAccount, on_delete=models.CASCADE, primary_key=True)
-    
     Age = models.CharField(max_length=10, null=True, blank=True)
     Experience = models.CharField(max_length=40, null=True, blank=True)
     Price = models.CharField(max_length=30, null=True, blank=True)

@@ -1,16 +1,17 @@
-<h3>Interviewer Profile</h3>
-{% for item in details%}
-<p>First Name:{{item.uid.uid.first_name}}</p>
-<p>Last Name:{{item.uid.uid.last_name}}</p>
-<p>Email Address:{{item.uid.uid.email}}</p>
-<p>Experience:{{item.uid.Experience}}</p>
-<p>Price:{{item.uid.Price}}</p>
-<p>About:{{item.uid.About_me}}</p>
+<button type="submit"> <a href="signin">Back</a></button>
+
+<h3>Interviewer Deatils</h3>
+<p>First Name:{{basic.uid.first_name}}</p>
+<p>Last Name:{{basic.uid.last_name}}</p>
+<p>Email Address:{{basic.uid.email}}</p>
+<p>Age:{{basic.Age}}</p>
+<p>Experience:{{basic.Experience}}</p>
+<p>About:{{basic.About_me}}</p>
+<p>Domain:{{interviewer.pp}}</p>
+<p>Price:{{basic.Price}}</p>
 <hr>
-{%for item in details%}
-<p>Available Slots{{item.Slot_time}}</p>
-<button type="submit"> <a>book</a></button>
-{%endfor%}
-<hr>
-<hr>
-{%endfor%}
+<h3>Available Slots</h3>
+{%for item in interviewer%}
+<p>Available Slot:{{item.Slot_time}}</p>
+<button type="submit"> <a href="">Book</a></button>
+{% endfor %}

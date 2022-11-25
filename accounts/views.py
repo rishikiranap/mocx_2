@@ -203,6 +203,16 @@ def signout(request):
     return redirect("home")
 
 def view(request):
-    details = Schedules.objects.all
+    #Create dictionary called context
+    context={}
+    #Get the requested interviewer Uid from the front-end
+    id = request.GET['pid']
+    #Get the Uid from Interviewer Table
+    obj = Schedules.objects.filter(uid_id = id)
+    bas = InterviewerAccount.objects.get(uid_id = id)
+   
+    #initilize context dictionary using "obj" and send it to the view.html.
+    context["interviewer"]=obj
+    context["basic"]=bas
     
-    return render(request,"accounts/view.html",{"details":details})
+    return render(request,"accounts/view.html",context)
