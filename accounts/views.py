@@ -216,3 +216,7 @@ def view(request):
     context["basic"]=bas
     
     return render(request,"accounts/view.html",context)
+
+
+def demo(request):
+    pass

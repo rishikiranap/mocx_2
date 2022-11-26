@@ -13,5 +13,9 @@
 <h3>Available Slots</h3>
 {%for item in interviewer%}
 <p>Available Slot:{{item.Slot_time}}</p>
-<button type="submit"> <a href="">Book</a></button>
+<form method="POST" action=' '>
+    {% csrf_token %} 
+    <input type="text" value="{{item.id}}" hidden>
+    <input type="submit" value="Book">
+</form>
 {% endfor %}
