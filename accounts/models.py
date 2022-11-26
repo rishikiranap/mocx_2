@@ -6,7 +6,7 @@ import uuid
 
 
 class manager(BaseUserManager):
-    def create_user(self, email, username, password, **kwargs):
+    def create_user(self, email, password, **kwargs):
         
         if not kwargs:
             phone=None
@@ -16,7 +16,7 @@ class manager(BaseUserManager):
 
         user = self.model(
         email=self.normalize_email(email),
-        username=username,
+       
         password=password,
         phone=phone,
         last_name=last_name,
@@ -28,10 +28,10 @@ class manager(BaseUserManager):
         return user
             
 
-    def create_superuser(self, email, username, password):
+    def create_superuser(self, email, password):
         user=self.create_user(
             email=self.normalize_email(email),
-            username=username,
+            
             password=password,
         )
         user.is_admin = True
@@ -43,7 +43,6 @@ class manager(BaseUserManager):
 class BasicAccount(AbstractBaseUser, PermissionsMixin):
     uid_id=models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     email = models.EmailField( max_length=60,unique=True)
-    username = models.CharField(max_length=60, unique=False, null=True, blank=True)
     date_joined = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(auto_now=True)
     is_admin = models.BooleanField(default=False)
@@ -56,7 +55,7 @@ class BasicAccount(AbstractBaseUser, PermissionsMixin):
     is_interviewer = models.BooleanField(default=False,blank=True,null=True)
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ['username']
+    REQUIRED_FIELDS = [' ']
     
     objects = manager()
 
