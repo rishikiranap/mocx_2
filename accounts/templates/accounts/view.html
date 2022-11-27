@@ -16,8 +16,11 @@
 <!--Send the requested date and Interviewee name to interviewer's Profile page-->
 <form method="POST" action='/re'>
     {% csrf_token %} 
-    <input id="name" name="name" type="text" value={{user.first_name}} hidden>
-    <input id="items" name="items" type="text" value={{item.id}} hidden>
+    <input id="ee_id" name="ee_id" type="text" value={{user.uid_id}} hidden>
+    <input id="ee_name" name="ee_name" type="text" value={{user.first_name}} hidden>
+    <input id="er_name" name="er_name" type="text" value={{item.uid.uid.first_name}} hidden>
+    <input id="er_email" name="er_email" type="text" value={{item.uid.uid.email}} hidden>
+    <input id="slot_id" name="slot_id" type="text" value={{item.id}} hidden>
     <input type="submit" value="Book">
 </form>
 {% endfor %}

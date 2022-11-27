@@ -85,10 +85,31 @@ def delete(request, id):
  
 def re(request):
     if request.method == "POST":
-        item_id = request.POST.get('items')
+        item_id = request.POST.get('slot_id')
         print(item_id)
-        iname = request.POST.get("name")
-        print(iname)
+        ee_id = request.POST.get("ee_id")
+        print(ee_id)
+        er_name = request.POST.get("er_name")
+        print(er_name)
+        ee_name = request.POST.get("ee_name")
+        print(ee_name)
+        er_email = request.POST.get("er_email")
+        print(er_email)
+        
+        subject = "Student Requested for Mock Interview!!"
+        email_sub = "Requested Mock Interview by " + ee_name
+        message = "Hello" + ' ' + er_name + '!! \n' +'Mock interview Requested by' + ee_name + '\n please check your Account!!\n\n Thanking You\n Team MocX' 
+        from_email = settings.EMAIL_HOST_USER
+        to_list = [er_email]
+        send_mail(subject, message, from_email, to_list, fail_silently=True) #Send mail to the Interviewer!
+            
+        send_mail( # send one to ourselves when a new time slot is added by the interviewer!!
+                        email_sub,
+                         "Mock interview is requested by:--"+ee_name+" \n\n "+"For the interviewer:--"+er_name+" \n\n "+"for slot id:--"+item_id,
+                         'noreply@mocx.in',
+                        ['rishikiranap@gmail.com'] 
+                     )
+        
         
     return render(request,"scheduling/re.html")
         
