@@ -31,6 +31,7 @@
 <!-- If the user is Interviewer and not Interviewee Show add slots -->  
     {% if user.is_interviewer %} 
     <button type="submit"> <a href="/add_slot">Add slot</a></button>
+    <button type="submit"> <a href="/re ">Schedules</a></button>
     <button type="submit"> <a href="/signout">Signoutt</a></button>
     {% endif %}
 
@@ -43,7 +44,7 @@
     <p>Name:  {{item.uid.first_name}}</p>
     <p>Exp: {{item.Experience}}</p>
     {% for item in all %}
-    <p>Available Slot:{{item.Slot_time}}</p>
+    <p>Available Slot:{{item.uid.Slot_time}}</p>
     {%endfor%}
     <br>
     <button type="submit"> <a href="{% url 'view' %}?pid={{item.uid.uid_id}}">View Profile</a></button>

@@ -81,3 +81,14 @@ def delete(request, id):
      dele = Schedules.objects.get(id=id)
      dele.delete()
      return redirect('schedules_list')
+ 
+ 
+def re(request):
+    if request.method == "POST":
+        item_id = request.POST.get('items')
+        print(item_id)
+        iname = request.POST.get("name")
+        print(iname)
+        
+    return render(request,"scheduling/re.html")
+        
