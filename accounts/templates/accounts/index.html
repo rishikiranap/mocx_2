@@ -40,13 +40,13 @@
     <button type="submit"> <a href="/signout">Signout</a></button>
     <h3>Interviewer Profiles</h3>
     {% for item in all %}
-    <p>Name:{{item.uid.uid.first_name}}</p>
-    <p>Exp:{{item.uid.Experience}}</p>
+    <p>Name:  {{item.uid.first_name}}</p>
+    <p>Exp: {{item.Experience}}</p>
     {% for item in all %}
     <p>Available Slot:{{item.Slot_time}}</p>
     {%endfor%}
     <br>
-    <button type="submit"> <a href="{% url 'view' %}?pid={{item.uid.uid.uid_id}}">View Profile</a></button>
+    <button type="submit"> <a href="{% url 'view' %}?pid={{item.uid.uid_id}}">View Profile</a></button>
     <hr>
     {% endfor %}
     {% endif %}

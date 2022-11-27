@@ -37,7 +37,8 @@ def signin(request):
     
         if user is not None:
             login(request, user)
-            schdeules = Schedules.objects.all
+            schdeules = InterviewerAccount.objects.all
+            check = Schedules.objects.all
             return render(request, "accounts/index.html",{'all':schdeules})
                 
         else:
