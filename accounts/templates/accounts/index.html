@@ -37,6 +37,7 @@
 <!-- If the user is not Interviewer and is Interviewee Show available slots -->
 
     {% if not user.is_interviewer%}
+    <button type="submit"> <a href="/signout">Signout</a></button>
     <h3>Interviewer Profiles</h3>
     {% for item in all %}
     <p>Name:{{item.uid.uid.first_name}}</p>
@@ -48,7 +49,6 @@
     <button type="submit"> <a href="{% url 'view' %}?pid={{item.uid.uid.uid_id}}">View Profile</a></button>
     <hr>
     {% endfor %}
-    <button type="submit"> <a href="/signout">Signout</a></button>
     {% endif %}
     
     {% else %}

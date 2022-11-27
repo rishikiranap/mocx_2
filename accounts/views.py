@@ -62,7 +62,7 @@ def signup(request):
         
         if BasicAccount.objects.filter(email=email):
             messages.error(request, "email already exist! Please try some other email")
-            return redirect('home')
+            return redirect('signup')
             
         if pass1 != pass2:
             messages.error(request,"Password does not match")
@@ -131,7 +131,6 @@ def InterviewerReg1(request):
     
     #Getting User info from Front-end
     if request.method == "POST":
-        username = request.POST['username']
         fname = request.POST['fname']
         lname = request.POST['lname']
         email = request.POST['email']
@@ -141,7 +140,7 @@ def InterviewerReg1(request):
         
         if BasicAccount.objects.filter(email=email):
             messages.error(request, "email already exist! Please try some other email")
-            return redirect('home')
+            return redirect('InterviewerReg1')
             
         if pass1 != pass2:
             messages.error(request,"Password does not match")
@@ -149,7 +148,7 @@ def InterviewerReg1(request):
 
         #Creating User 
         if pass1==pass2:
-            user = BasicAccount.objects.create_user(email, username, pass1)
+            user = BasicAccount.objects.create_user(email, pass1)
             user.first_name = fname
             user.last_name = lname
             user.phone=phone
