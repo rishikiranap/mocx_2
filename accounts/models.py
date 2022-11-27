@@ -31,7 +31,6 @@ class manager(BaseUserManager):
     def create_superuser(self, email, password):
         user=self.create_user(
             email=self.normalize_email(email),
-            
             password=password,
         )
         user.is_admin = True
@@ -55,7 +54,7 @@ class BasicAccount(AbstractBaseUser, PermissionsMixin):
     is_interviewer = models.BooleanField(default=False,blank=True,null=True)
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = [' ']
+    
     
     objects = manager()
 
