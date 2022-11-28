@@ -1,6 +1,6 @@
 from django.db import models
 from accounts.models import InterviewerAccount,IntervieweeAccount
-
+from datetime import datetime
 # Create your models here.
 
 
@@ -28,7 +28,7 @@ class Schedules(models.Model):
         self.save()
         
     def __str__(self):
-        return str(self.Slot_time)
+        return str(self.Slot_time.strftime(("%Y-%m-%d at %H:%M")))
     
     
     
@@ -36,16 +36,18 @@ class Schedules(models.Model):
     
     
 class Scheduled(models.Model):
-    STATUS = [
-        ("C","Confirmed"),
+    PAYMENT =[
+        ("S","Successful"),
+        ("P","Pending"),
         ("D","Declined"),
+        
     ]
     Student_uid = models.ForeignKey(IntervieweeAccount, on_delete=models.CASCADE)
     Interviewer_Slot = models.OneToOneField(Schedules, on_delete=models.CASCADE)
-    status = models.CharField(max_length=1, choices=STATUS, default="None")
+    Payment = models.CharField(max_length=1, choices=PAYMENT, default="P")
     
-    def change_to_confirmed(self):
-        self.status = "C"
+    def change_to_Successful(self):
+        self.status = "S"
         self.save()
 
     
@@ -54,5 +56,5 @@ class Scheduled(models.Model):
         self.save()
         
     def __str__(self):
-        return self.status
+        return self.Payment
     

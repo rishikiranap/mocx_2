@@ -3,7 +3,7 @@ from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib import messages
-from scheduling.models import Schedules
+from scheduling.models import Schedules, Scheduled
 from django.contrib.auth import authenticate,login,logout
 from .models import BasicAccount,IntervieweeAccount,InterviewerAccount
 from .backend import EmailBackend
@@ -12,7 +12,7 @@ from django.core.mail import send_mail
 # Create your views here.
 
 def home(request):
-    
+    schdeules = InterviewerAccount.objects.all
      #Check The Interviewer filled all the deatils in InterviewerReg2
      #Better to Use boolean here!!!!!
     if IntervieweeAccount.Occupation is None:
@@ -26,7 +26,7 @@ def home(request):
     elif IntervieweeAccount.Res_city is None:
         return redirect('IntervieweeReg')
     else:
-     return render(request,"accounts/index.html")  
+     return render(request,"accounts/index.html",{"all":schdeules})  
 
 def signin(request):
     if request.method == "POST":
@@ -215,3 +215,32 @@ def view(request):
     context["basic"]=bas
     
     return render(request,"accounts/view.html",context)
+def confirm(request):
+    if request.method == "POST":
+        Student_uid = request.POST.get("ee_id")
+        Interviewer_Slot = request.POST.get("slot_time")
+        slot_id = request.POST.get("slot_id")
+        ee_name = request.POST.get("ee_name")
+        er_name = request.POST.get("er_name")
+        
+        scheduled = Scheduled.objects.create(Student_uid_id=Student_uid, id=slot_id, Interviewer_Slot_id=slot_id)
+        scheduled.save()
+        
+        cnf_details = Scheduled.objects.filter(id = slot_id)
+        
+        #Send mail to Us and see that the interviewee did not done the payment yet!!
+        subject = "Student Requested for Mock Interview payment pending!!"
+        email_sub = "Requested Mock Interview by " + ee_name
+        message = "Hello\n" + 'Mock interview for the interviewer:  ' + " "+er_name + '!! \n' +' Requested by interviewee: ' +" "+ ee_name + '\n Payment Pending please check !!\n\n\n Team MocX' 
+        from_email = settings.EMAIL_HOST_USER
+        to_list = ['rishikiranap@gmail.com']
+        send_mail(subject, message, from_email, to_list, fail_silently=True) 
+            
+    return render(request,"accounts/confirm.html",{"dam":cnf_details})
+
+def delete(request, id): 
+     #delete the slot added in the Scheduled Table if the user not willing to payment!!
+     dele = Scheduled.objects.get(id=id)
+     dele.delete()
+     return redirect('home')
+        
