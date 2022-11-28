@@ -28,7 +28,7 @@ class Schedules(models.Model):
         self.save()
         
     def __str__(self):
-        return str(self.Slot_time.strftime(("%Y-%m-%d at %H:%M")))
+        return str(self.Slot_time.strftime(("%d-%m-%Y at %H:%M")))
     
     
     
