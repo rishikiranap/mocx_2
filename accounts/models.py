@@ -101,7 +101,7 @@ class InterviewerAccount(models.Model):
    
     
     def __str__(self):
-        return str(self.Experience)
+        return str(self.uid)
     
     
     
