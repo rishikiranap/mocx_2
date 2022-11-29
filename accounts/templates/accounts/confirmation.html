@@ -1,10 +1,8 @@
 <h4>Confirm your slot details</h4>
 
-<p>Your name:{{ee_name}}</p>
+<p>Your name: {{ee_name}}</p>
 <p>Date of Mock Test: {{slot}}</p>
-<p>Interviewer Name:{{item}}
-
-<p><button><a href="/">Back</a></button></p>
+<p>Interviewer Name: {{item}}
 
 <form method="POST" action='/save_scheduled'>
     {% csrf_token %} 
@@ -15,3 +13,4 @@
     <input id="slot_time" name="slot_time" type="text" value={{slot}} hidden>
     <input type="submit" value="Make Payment">
 </form>
+<p><button><a href="/">Back</a></button></p>

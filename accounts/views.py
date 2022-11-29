@@ -223,24 +223,13 @@ def confirm(request):
         slot_id = request.POST.get("slot_id")
         ee_name = request.POST.get("ee_name")
         er_name = request.POST.get("er_name")
-        context['item']=er_name,
+        #Send it to the Confirmation page use Dictionary!!!
+        context['item']=er_name
         context['slot']=Interviewer_Slot
         context['Student_uid']=Student_uid
         context['slot_id']=slot_id
         context['ee_name']=ee_name
-        #scheduled = Scheduled.objects.create(Student_uid_id=Student_uid, id=slot_id, Interviewer_Slot_id=slot_id)
-        #scheduled.save()
         
-        #cnf_details = Scheduled.objects.filter(id = slot_id)
-        
-        #Send mail to Us and see that the interviewee did not done the payment yet!!
-        #subject = "Student Requested for Mock Interview payment pending!!"
-        #email_sub = "Requested Mock Interview by " + ee_name
-        #message = "Hello\n" + 'Mock interview for the interviewer:  ' + " "+er_name + '!! \n' +' Requested by interviewee: ' +" "+ ee_name + '\n Payment Pending please check !!\n\n\n Team MocX' 
-        #from_email = settings.EMAIL_HOST_USER
-        #to_list = ['rishikiranap@gmail.com']
-        #send_mail(subject, message, from_email, to_list, fail_silently=True) 
-            
     return render(request,"accounts/confirmation.html",context)
 
 def save_scheduled(request):
@@ -258,7 +247,7 @@ def save_scheduled(request):
         #Send mail to Us and see that the interviewee did not done the payment yet!!
         subject = "Student Requested for Mock Interview payment pending!!"
         email_sub = "Requested Mock Interview by " + ee_name
-        message = "Hello\n\n" + 'Mock interview for the interviewer:  ' + " "+er_name + '!! \n\n' +' Requested by interviewee: ' +" "+ ee_name + '\n Payment Pending please check !!\n\n\n Team MocX' 
+        message = "Hello\n\n" + 'Mock interview for the interviewer:  ' + " "+er_name + ' \n\n' +' Requested by interviewee: ' +" "+ ee_name+"\n\n"+"Whose Id is:"+Student_uid+"\n"+'\n Payment Pending please check !!\n\n\n Team MocX' 
         from_email = settings.EMAIL_HOST_USER
         to_list = ['rishikiranap@gmail.com']
         send_mail(subject, message, from_email, to_list, fail_silently=True)
