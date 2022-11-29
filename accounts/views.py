@@ -217,30 +217,58 @@ def view(request):
     return render(request,"accounts/view.html",context)
 def confirm(request):
     if request.method == "POST":
+        context = {}
         Student_uid = request.POST.get("ee_id")
         Interviewer_Slot = request.POST.get("slot_time")
         slot_id = request.POST.get("slot_id")
         ee_name = request.POST.get("ee_name")
         er_name = request.POST.get("er_name")
+        context['item']=er_name,
+        context['slot']=Interviewer_Slot
+        context['Student_uid']=Student_uid
+        context['slot_id']=slot_id
+        context['ee_name']=ee_name
+        #scheduled = Scheduled.objects.create(Student_uid_id=Student_uid, id=slot_id, Interviewer_Slot_id=slot_id)
+        #scheduled.save()
         
-        scheduled = Scheduled.objects.create(Student_uid_id=Student_uid, id=slot_id, Interviewer_Slot_id=slot_id)
+        #cnf_details = Scheduled.objects.filter(id = slot_id)
+        
+        #Send mail to Us and see that the interviewee did not done the payment yet!!
+        #subject = "Student Requested for Mock Interview payment pending!!"
+        #email_sub = "Requested Mock Interview by " + ee_name
+        #message = "Hello\n" + 'Mock interview for the interviewer:  ' + " "+er_name + '!! \n' +' Requested by interviewee: ' +" "+ ee_name + '\n Payment Pending please check !!\n\n\n Team MocX' 
+        #from_email = settings.EMAIL_HOST_USER
+        #to_list = ['rishikiranap@gmail.com']
+        #send_mail(subject, message, from_email, to_list, fail_silently=True) 
+            
+    return render(request,"accounts/confirmation.html",context)
+
+def save_scheduled(request):
+    if request.method == "POST":
+        context = {}
+        Student_uid = request.POST.get("ee_id")
+        Interviewer_Slot = request.POST.get("slot_time")
+        slot_id = request.POST.get("slot_id")
+        ee_name = request.POST.get("ee_name")
+        er_name = request.POST.get("er_name")
+        context['slot_id']=slot_id
+        scheduled = Scheduled.objects.create(Student_uid_id=Student_uid, Interviewer_Slot_id=slot_id)
         scheduled.save()
-        
-        cnf_details = Scheduled.objects.filter(id = slot_id)
         
         #Send mail to Us and see that the interviewee did not done the payment yet!!
         subject = "Student Requested for Mock Interview payment pending!!"
         email_sub = "Requested Mock Interview by " + ee_name
-        message = "Hello\n" + 'Mock interview for the interviewer:  ' + " "+er_name + '!! \n' +' Requested by interviewee: ' +" "+ ee_name + '\n Payment Pending please check !!\n\n\n Team MocX' 
+        message = "Hello\n\n" + 'Mock interview for the interviewer:  ' + " "+er_name + '!! \n\n' +' Requested by interviewee: ' +" "+ ee_name + '\n Payment Pending please check !!\n\n\n Team MocX' 
         from_email = settings.EMAIL_HOST_USER
         to_list = ['rishikiranap@gmail.com']
-        send_mail(subject, message, from_email, to_list, fail_silently=True) 
-            
-    return render(request,"accounts/confirm.html",{"dam":cnf_details})
+        send_mail(subject, message, from_email, to_list, fail_silently=True)
+        
+    return render(request,"accounts/payment_page.html",context)
+    
 
 def delete(request, id): 
      #delete the slot added in the Scheduled Table if the user not willing to payment!!
-     dele = Scheduled.objects.get(id=id)
+     dele = Scheduled.objects.get(Interviewer_Slot_id=id)
      dele.delete()
      return redirect('home')
         

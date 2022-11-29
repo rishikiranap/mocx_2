@@ -1,9 +1,0 @@
-<h4>Confirm your slot details</h4>
-{%for items in dam%}
-<p>Your name:{{items.Student_uid.uid.first_name}}</p>
-<p>Date of Mock Test: {{items.Interviewer_Slot}}</p>
-<p>Interviewer Name:{{items.Interviewer_Slot.uid.uid.first_name}}
-
-<p><button type="submit"> <a href="">Make Payment</a></button></p>
-<p><button><a href="/delete/{{items.id}}">Back</a></button></p>
-{%endfor%}
