@@ -15,4 +15,5 @@ urlpatterns = [
    path('save_scheduled',views.save_scheduled, name="save_scheduled"),
    path('delete/<int:id>', views.delete, name="delete"),
 
+
 ]

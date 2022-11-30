@@ -140,6 +140,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-KEY = rzp_test_P8SFGgXfIpStc6
+KEY = 'rzp_test_yYcEG8S15Q61Nb'
 
-SECRET = g7WLrVPZJQJJdaUZtR5gr31Z
+SECRET = '9rgDuVBUfQVuGV8uaOmqTqX9'

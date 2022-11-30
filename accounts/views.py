@@ -8,6 +8,7 @@ from django.contrib.auth import authenticate,login,logout
 from .models import BasicAccount,IntervieweeAccount,InterviewerAccount
 from .backend import EmailBackend
 from mocx_2 import settings
+import razorpay
 from django.core.mail import send_mail
 # Create your views here.
 
@@ -233,6 +234,7 @@ def confirm(request):
         context['price']=price
     return render(request,"accounts/confirmation.html",context)
 
+from django.conf import settings
 def save_scheduled(request):
     if request.method == "POST":
         context = {}
@@ -241,9 +243,24 @@ def save_scheduled(request):
         slot_id = request.POST.get("slot_id")
         ee_name = request.POST.get("ee_name")
         er_name = request.POST.get("er_name")
+        price = request.POST.get('price')
+        
         context['slot_id']=slot_id
+       
+        
         scheduled = Scheduled.objects.create(Student_uid_id=Student_uid, Interviewer_Slot_id=slot_id)
         scheduled.save()
+        
+        client = razorpay.Client(auth = (settings.KEY , settings.SECRET))
+        payment = client.order.create({'amount' : price , 'currency' : 'INR' , 'payment_capture' : 1})
+        scheduled.razor_pay_order_id = payment['id']
+        context['payment']=payment
+        scheduled.save()
+        
+        print('**************')
+        print(payment)
+        
+        print('***************')
         
         #Send mail to Us and see that the interviewee did not done the payment yet!!
         subject = "Student Requested for Mock Interview payment pending!!"
@@ -253,7 +270,7 @@ def save_scheduled(request):
         to_list = ['rishikiranap@gmail.com']
         send_mail(subject, message, from_email, to_list, fail_silently=True)
         
-    return render(request,"accounts/payment_page.html",context)
+    return render(request,"accounts/confirmation.html",context)
     
 
 def delete(request, id): 
