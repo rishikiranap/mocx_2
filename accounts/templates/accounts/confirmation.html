@@ -2,7 +2,8 @@
 
 <p>Your name: {{ee_name}}</p>
 <p>Date of Mock Test: {{slot}}</p>
-<p>Interviewer Name: {{item}}
+<p>Interviewer Name: {{item}}</p>
+<p>Price: {{price}}/-</p>
 
 <form method="POST" action='/save_scheduled'>
     {% csrf_token %} 
@@ -11,6 +12,7 @@
     <input id="er_name" name="er_name" type="text" value={{item}} hidden>
     <input id="slot_id" name="slot_id" type="text" value={{slot_id}} hidden>
     <input id="slot_time" name="slot_time" type="text" value={{slot}} hidden>
+    <input id="price" name="price" type="text" value={{price}} hidden>
     <input type="submit" value="Make Payment">
 </form>
 <p><button><a href="/">Back</a></button></p>

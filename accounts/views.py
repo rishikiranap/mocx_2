@@ -223,13 +223,14 @@ def confirm(request):
         slot_id = request.POST.get("slot_id")
         ee_name = request.POST.get("ee_name")
         er_name = request.POST.get("er_name")
+        price = request.POST.get('price')
         #Send it to the Confirmation page use Dictionary!!!
         context['item']=er_name
         context['slot']=Interviewer_Slot
         context['Student_uid']=Student_uid
         context['slot_id']=slot_id
         context['ee_name']=ee_name
-        
+        context['price']=price
     return render(request,"accounts/confirmation.html",context)
 
 def save_scheduled(request):
