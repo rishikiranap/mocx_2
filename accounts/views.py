@@ -237,30 +237,27 @@ def confirm(request):
 from django.conf import settings
 def save_scheduled(request):
     if request.method == "POST":
-        context = {}
+    
         Student_uid = request.POST.get("ee_id")
         Interviewer_Slot = request.POST.get("slot_time")
         slot_id = request.POST.get("slot_id")
         ee_name = request.POST.get("ee_name")
         er_name = request.POST.get("er_name")
         price = request.POST.get('price')
-        
-        context['slot_id']=slot_id
-       
+    
         
         scheduled = Scheduled.objects.create(Student_uid_id=Student_uid, Interviewer_Slot_id=slot_id)
         scheduled.save()
         
-        client = razorpay.Client(auth = (settings.KEY , settings.SECRET))
-        payment = client.order.create({'amount' : price , 'currency' : 'INR' , 'payment_capture' : 1})
+        
+        client = razorpay.Client(auth =(settings.KEY , settings.SECRET))
+        payment = client.order.create({'amount':price , 'currency':'INR' , 'payment_capture':1})
         scheduled.razor_pay_order_id = payment['id']
-        context['payment']=payment
         scheduled.save()
-        
-        print('**************')
+        print("**********")
         print(payment)
+        print("**********")
         
-        print('***************')
         
         #Send mail to Us and see that the interviewee did not done the payment yet!!
         subject = "Student Requested for Mock Interview payment pending!!"
@@ -270,7 +267,11 @@ def save_scheduled(request):
         to_list = ['rishikiranap@gmail.com']
         send_mail(subject, message, from_email, to_list, fail_silently=True)
         
-    return render(request,"accounts/confirmation.html",context)
+        context = {
+            'slot_id':slot_id,
+            'payment':payment
+        }
+    return render(request,"accounts/payment_page.html",context)
     
 
 def delete(request, id): 
