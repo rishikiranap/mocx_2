@@ -51,12 +51,12 @@ class Scheduled(models.Model):
       
       
     def change_to_Successful(self):
-        self.status = "S"
+        self.Payment = "S"
         self.save()
 
     
     def change_to_declined(self):
-        self.status = "D"
+        self.Payment = "D"
         self.save()
         
     def __str__(self):

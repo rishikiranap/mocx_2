@@ -10,6 +10,7 @@ from .backend import EmailBackend
 from mocx_2 import settings
 import razorpay
 from django.core.mail import send_mail
+from django.conf import settings
 # Create your views here.
 
 def home(request):
@@ -225,6 +226,20 @@ def confirm(request):
         ee_name = request.POST.get("ee_name")
         er_name = request.POST.get("er_name")
         price = request.POST.get('price')
+        
+        scheduled = Scheduled.objects.create(Student_uid_id=Student_uid, Interviewer_Slot_id=slot_id)
+        scheduled.save()
+        #Razorpay stuff creating order and send it to server!!!!!
+        client = razorpay.Client(auth =(settings.KEY , settings.SEC))
+        payment = client.order.create({'amount':price , 'currency':'INR' , 'payment_capture': 1})
+        client.set_app_details({"title" : "MocX", "version" : "1.3.8"})
+        scheduled.razor_pay_order_id = payment['id']
+        scheduled.save()
+        #test weather the created order_id is comming!!!!!
+        print("**********")
+        print(payment)
+        print("**********")
+        
         #Send it to the Confirmation page use Dictionary!!!
         context['item']=er_name
         context['slot']=Interviewer_Slot
@@ -232,12 +247,13 @@ def confirm(request):
         context['slot_id']=slot_id
         context['ee_name']=ee_name
         context['price']=price
+        context['payment']=payment
     return render(request,"accounts/confirmation.html",context)
 
-from django.conf import settings
+
 def save_scheduled(request):
     if request.method == "POST":
-    
+        
         Student_uid = request.POST.get("ee_id")
         Interviewer_Slot = request.POST.get("slot_time")
         slot_id = request.POST.get("slot_id")
@@ -250,15 +266,6 @@ def save_scheduled(request):
         scheduled.save()
         
         
-        client = razorpay.Client(auth =(settings.KEY , settings.SECRET))
-        payment = client.order.create({'amount':price , 'currency':'INR' , 'payment_capture':1})
-        scheduled.razor_pay_order_id = payment['id']
-        scheduled.save()
-        print("**********")
-        print(payment)
-        print("**********")
-        
-        
         #Send mail to Us and see that the interviewee did not done the payment yet!!
         subject = "Student Requested for Mock Interview payment pending!!"
         email_sub = "Requested Mock Interview by " + ee_name
@@ -269,9 +276,9 @@ def save_scheduled(request):
         
         context = {
             'slot_id':slot_id,
-            'payment':payment
+            #'payment':payment
         }
-    return render(request,"accounts/payment_page.html",context)
+    return render(request,"accounts/confirmation.html",context)
     
 
 def delete(request, id): 
