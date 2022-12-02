@@ -5,7 +5,7 @@
 <p>Interviewer Name: {{item}}</p>
 <p>Price: {{price}}/-</p>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-<form method="POST" action='/confirm'>
+<form method="POST" action='/save_scheduled'>
     {% csrf_token %} 
     
     <input id="ee_id" name="ee_id" type="text" value={{user.uid_id}} hidden>
@@ -14,8 +14,10 @@
     <input id="slot_id" name="slot_id" type="text" value={{slot_id}} hidden>
     <input id="slot_time" name="slot_time" type="text" value={{slot}} hidden>
     <input id="price" name="price" type="text" value={{price}} hidden>
-    <button id='rzp-button1'><input type="submit" value="Make Payment">Make</button>
+    <input id="pay_id" name="pay_id" type="text" value={{payment}} hidden>
+    <button id='rzp-button1'><input type="submit" value="Make Payment"></button>
 </form>
+
 
 <p><button><a href="/">Back</a></button></p>
 
