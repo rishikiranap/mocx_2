@@ -217,6 +217,8 @@ def view(request):
     context["basic"]=bas
     
     return render(request,"accounts/view.html",context)
+
+
 def confirm(request):
     if request.method == "POST":
         context = {}
@@ -226,19 +228,23 @@ def confirm(request):
         ee_name = request.POST.get("ee_name")
         er_name = request.POST.get("er_name")
         price = request.POST.get('price')
-        
-        scheduled = Scheduled.objects.create(Student_uid_id=Student_uid, Interviewer_Slot_id=slot_id)
-        scheduled.save()
+        #Convert price from string to int 
+        int_price = int(price)
+        int_price=int_price*100
         #Razorpay stuff creating order and send it to server!!!!!
         client = razorpay.Client(auth =(settings.KEY , settings.SEC))
-        payment = client.order.create({'amount':price , 'currency':'INR' , 'payment_capture': 1})
+        payment = client.order.create({'amount':int_price , 'currency':'INR' , 'payment_capture': 1})
         client.set_app_details({"title" : "MocX", "version" : "1.3.8"})
-        scheduled.razor_pay_order_id = payment['id']
-        scheduled.save()
+        
         #test weather the created order_id is comming!!!!!
         print("**********")
         print(payment)
+        print(int_price)
         print("**********")
+        
+        scheduled = Scheduled.objects.create(Student_uid_id=Student_uid, Interviewer_Slot_id=slot_id)
+        scheduled.razor_pay_order_id = payment['id']
+        scheduled.save()
         
         #Send it to the Confirmation page use Dictionary!!!
         context['item']=er_name
@@ -260,10 +266,12 @@ def save_scheduled(request):
         ee_name = request.POST.get("ee_name")
         er_name = request.POST.get("er_name")
         price = request.POST.get('price')
+        payment_id = request.POST.get('pay_id')
     
-        
         scheduled = Scheduled.objects.create(Student_uid_id=Student_uid, Interviewer_Slot_id=slot_id)
+        scheduled.razor_pay_order_id = payment_id
         scheduled.save()
+
         
         
         #Send mail to Us and see that the interviewee did not done the payment yet!!
@@ -276,9 +284,10 @@ def save_scheduled(request):
         
         context = {
             'slot_id':slot_id,
-            #'payment':payment
+        
         }
     return render(request,"accounts/confirmation.html",context)
+
     
 
 def delete(request, id): 
