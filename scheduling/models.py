@@ -43,7 +43,7 @@ class Scheduled(models.Model):
         
     ]
     Student_uid = models.ForeignKey(IntervieweeAccount, on_delete=models.CASCADE)
-    Interviewer_Slot = models.OneToOneField(Schedules, on_delete=models.CASCADE)
+    Interviewer_Slot = models.OneToOneField(Schedules,unique=False, on_delete=models.CASCADE)
     Payment = models.CharField(max_length=1, choices=PAYMENT, default="P")
     razor_pay_order_id = models.CharField(max_length=100,null=True,blank=True)
     razor_pay_payment_id = models.CharField(max_length=100,null=True,blank=True)

@@ -13,6 +13,8 @@
 <h3>Available Slots</h3>
 {%for item in interviewer%}
 <p>Available Slot:{{item.Slot_time}}</p>
+
+
 <!--Send the requested date and Interviewee name to interviewer's Profile page-->
 <form method="POST" action='/confirm'>
     {% csrf_token %} 

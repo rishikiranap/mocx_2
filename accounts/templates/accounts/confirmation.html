@@ -14,8 +14,8 @@
     <input id="slot_id" name="slot_id" type="text" value={{slot_id}} hidden>
     <input id="slot_time" name="slot_time" type="text" value={{slot}} hidden>
     <input id="price" name="price" type="text" value={{price}} hidden>
-    <input id="pay_id" name="pay_id" type="text" value={{payment}} hidden>
-    <button id='rzp-button1'><input type="submit" value="Make Payment"></button>
+    <input id="order_id" name="order_id" type="text" value={{payment.id}} hidden>
+    <input id='rzp-button1' type="submit" value="Make Payment">
 </form>
 
 
@@ -33,16 +33,19 @@ var options = {
     "description": "Test Transaction",
     "image": "https://example.com/your_logo",
     "order_id": "{{payment.id}}", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    
     "handler": function (response){
-        alert(response.razorpay_payment_id);
-        alert(response.razorpay_order_id);
-        alert(response.razorpay_signature)
+             window.location.href = "http://127.0.0.1:8000/accounts/success/?order_id={{payment.id}}"
+       
+         
+
     },
 
     "theme": {
         "color": "#3379cc"
     }
 };
+
 var rzp1 = new Razorpay(options);
 rzp1.on('payment.failed', function (response){
         alert(response.error.code);

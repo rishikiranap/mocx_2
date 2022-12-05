@@ -8,9 +8,11 @@ from django.contrib.auth import authenticate,login,logout
 from .models import BasicAccount,IntervieweeAccount,InterviewerAccount
 from .backend import EmailBackend
 from mocx_2 import settings
+from django.contrib.auth.decorators import login_required
 import razorpay
 from django.core.mail import send_mail
 from django.conf import settings
+
 # Create your views here.
 
 def home(request):
@@ -203,11 +205,14 @@ def signout(request):
     messages.success(request, "logged out!")
     return redirect("home")
 
+@login_required
 def view(request):
     #Create dictionary called context
     context={}
+    
     #Get the requested interviewer Uid from the front-end
     id = request.GET['pid']
+    
     #Get the Uid from Interviewer Table
     obj = Schedules.objects.filter(uid_id = id)
     bas = InterviewerAccount.objects.get(uid_id = id)
@@ -218,7 +223,7 @@ def view(request):
     
     return render(request,"accounts/view.html",context)
 
-
+@login_required
 def confirm(request):
     if request.method == "POST":
         context = {}
@@ -228,23 +233,26 @@ def confirm(request):
         ee_name = request.POST.get("ee_name")
         er_name = request.POST.get("er_name")
         price = request.POST.get('price')
+        
         #Convert price from string to int 
         int_price = int(price)
         int_price=int_price*100
+        
+     
         #Razorpay stuff creating order and send it to server!!!!!
         client = razorpay.Client(auth =(settings.KEY , settings.SEC))
         payment = client.order.create({'amount':int_price , 'currency':'INR' , 'payment_capture': 1})
         client.set_app_details({"title" : "MocX", "version" : "1.3.8"})
+        
+        scheduled = Scheduled.objects.create(Student_uid_id=Student_uid, Interviewer_Slot_id=slot_id)
+        scheduled.razor_pay_order_id = payment['id']
+        scheduled.save()
         
         #test weather the created order_id is comming!!!!!
         print("**********")
         print(payment)
         print(int_price)
         print("**********")
-        
-        scheduled = Scheduled.objects.create(Student_uid_id=Student_uid, Interviewer_Slot_id=slot_id)
-        scheduled.razor_pay_order_id = payment['id']
-        scheduled.save()
         
         #Send it to the Confirmation page use Dictionary!!!
         context['item']=er_name
@@ -254,42 +262,42 @@ def confirm(request):
         context['ee_name']=ee_name
         context['price']=price
         context['payment']=payment
+        
     return render(request,"accounts/confirmation.html",context)
 
+@login_required
+def pay_success(request):
+    if request.method == "GET":
+     order_id = request.GET.get('order_id')
+     scheduled = Scheduled.objects.get(razor_pay_order_id = order_id)
+     #Check the detils of order_id and successful order_id was matching if same then payment is success!!!
+     print(order_id)
+     print(scheduled.razor_pay_order_id)
+     
+     #Change the payment status to Successful!!!
+     scheduled.change_to_Successful()
+     scheduled.save
+     
+     #Send email after Interviewee made payment successful!!
+     subject = "Payment Successfull!"
+     message = "Hello Team, \n\n\n" + 'Interviewee:  ' + scheduled.Student_uid.uid.first_name+'  ' + 'payment was successfull!! \n' +'with interviewer:  '+ scheduled.Interviewer_Slot.uid.uid.first_name +"\n"+"for the slot time and date:  "+str(scheduled.Interviewer_Slot.Slot_time)+'\n\n' +'Please Verify!!!'
+     from_email = settings.EMAIL_HOST_USER
+     to_list = ["rishikiranap@gmail.com"]
+     send_mail(subject, message, from_email, to_list, fail_silently=True) #Send mail to the Registered Users!
+     
+     messages.success(request,"Payment Successful !!!")
+     return render(request,"accounts/index.html")
+     
+    else:
+        return HttpResponse('Payment Unsuccessful! Please try again')
 
 def save_scheduled(request):
-    if request.method == "POST":
+    pass
         
-        Student_uid = request.POST.get("ee_id")
-        Interviewer_Slot = request.POST.get("slot_time")
-        slot_id = request.POST.get("slot_id")
-        ee_name = request.POST.get("ee_name")
-        er_name = request.POST.get("er_name")
-        price = request.POST.get('price')
-        payment_id = request.POST.get('pay_id')
-    
-        scheduled = Scheduled.objects.create(Student_uid_id=Student_uid, Interviewer_Slot_id=slot_id)
-        scheduled.razor_pay_order_id = payment_id
-        scheduled.save()
-
-        
-        
-        #Send mail to Us and see that the interviewee did not done the payment yet!!
-        subject = "Student Requested for Mock Interview payment pending!!"
-        email_sub = "Requested Mock Interview by " + ee_name
-        message = "Hello\n\n" + 'Mock interview for the interviewer:  ' + " "+er_name + ' \n\n' +' Requested by interviewee: ' +" "+ ee_name+"\n\n"+"Whose Id is:"+Student_uid+"\n"+'\n Payment Pending please check !!\n\n\n Team MocX' 
-        from_email = settings.EMAIL_HOST_USER
-        to_list = ['rishikiranap@gmail.com']
-        send_mail(subject, message, from_email, to_list, fail_silently=True)
-        
-        context = {
-            'slot_id':slot_id,
-        
-        }
-    return render(request,"accounts/confirmation.html",context)
+    return render(request,"accounts/confirmation.html")
 
     
-
+@login_required
 def delete(request, id): 
      #delete the slot added in the Scheduled Table if the user not willing to payment!!
      dele = Scheduled.objects.get(Interviewer_Slot_id=id)

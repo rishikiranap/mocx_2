@@ -14,6 +14,7 @@ urlpatterns = [
    path('confirm',views.confirm, name="confirm"),
    path('save_scheduled',views.save_scheduled, name="save_scheduled"),
    path('delete/<int:id>', views.delete, name="delete"),
+   path('accounts/success/', views.pay_success, name="success"),
 
 
 ]
