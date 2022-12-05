@@ -16,7 +16,12 @@ from django.conf import settings
 # Create your views here.
 
 def home(request):
+    context ={}
     schdeules = InterviewerAccount.objects.all
+    check = Schedules.objects.all
+    context['all']=schdeules
+    context['dates']=check
+    
      #Check The Interviewer filled all the deatils in InterviewerReg2
      #Better to Use boolean here!!!!!
     if IntervieweeAccount.Occupation is None:
@@ -30,7 +35,7 @@ def home(request):
     elif IntervieweeAccount.Res_city is None:
         return redirect('IntervieweeReg')
     else:
-     return render(request,"accounts/index.html",{"all":schdeules})  
+     return render(request,"accounts/index.html",context)  
 
 def signin(request):
     if request.method == "POST":

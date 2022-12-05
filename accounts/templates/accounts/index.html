@@ -43,8 +43,8 @@
     {% for item in all %}
     <p>Name:  {{item.uid.first_name}}</p>
     <p>Exp: {{item.Experience}}</p>
-    {% for item in all %}
-    <p>Available Slot:{{item.uid.Slot_time}}</p>
+    {% for item in dates %}
+    <p>Available Slot:{{item}}</p>
     {%endfor%}
     <br>
     <button type="submit"> <a href="{% url 'view' %}?pid={{item.uid.uid_id}}">View Profile</a></button>
