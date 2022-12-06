@@ -140,7 +140,8 @@ def InterviewerReg2(request):
         age = request.POST['age']
         experience = request.POST['experience']
         price = request.POST['price']
-        domain = request.POST['domain']
+        domain = request.POST['Domain']
+        
         about_me = request.POST['about_me']
         linkedin = request.POST['linkedin']
         

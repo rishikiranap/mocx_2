@@ -107,9 +107,9 @@ class InterviewerAccount(models.Model):
     Experience = models.CharField(max_length=40, null=True, blank=True)
     Price = models.CharField(max_length=30, null=True, blank=True)
     #Adding the domain in the feild
-    Domain = models.CharField(max_length=60, blank=True, null=True, choices=DOMAIN)
+    #Domain = models.CharField(max_length=60, blank=True, null=True, choices=DOMAIN)
     #Topics are added later
-   
+    Domain=models.CharField(max_length=100)
     About_me = models.CharField(max_length=200, null=True, blank=True)
     Linkedin = models.URLField(max_length=60, blank=True)
     
