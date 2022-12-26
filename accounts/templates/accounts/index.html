@@ -5,6 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MocX</title>
+    <script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag/dist/js/multi-select-tag.js"></script>
+    <script>
+        new MultiSelectTag('Domain')  // id
+    </script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag/dist/css/multi-select-tag.css">
+
 </head>
 <body>
 
@@ -31,29 +37,54 @@
 <!-- If the user is Interviewer and not Interviewee Show add slots -->  
     {% if user.is_interviewer %} 
     <button type="submit"> <a href="/add_slot">Add slot</a></button>
-    <button type="submit"> <a href="/signout">Signoutt</a></button>
+    <button type="submit"> <a href="/signout">Logout</a></button>
     {% endif %}
 
 <!-- If the user is not Interviewer and is Interviewee Show available slots -->
 
     {% if not user.is_interviewer%}
-    <button type="submit"> <a href="/signout">Signout</a></button>
-    <h3>Interviewer Profiles</h3>
-    {% for item in all %}
-    <p>Name:  {{item.uid.first_name}}</p>
-    <p>Exp: {{item.Experience}}</p>
-    {% for item in all %}
-    <p>Available Slot:{{item.Slot_time}}</p>
-    {%endfor%}
-    <br>
-    <button type="submit"> <a href="{% url 'view' %}?pid={{item.uid.uid_id}}">View Profile</a></button>
-    <hr>
-    {% endfor %}
+    <button type="submit"> <a href="/signout">Logout</a></button>
+    <div style="width:39%;height:auto;float:left">
+        <form action="" method="get">
+            <!-- <input type="text" value="" placeholder="Domain" name="Domain"/> -->
+            <select  id="Domain" name="Domain" placeholder="Domain" multiple>
+                <option name='IELTS'>IELTS</option>
+                <option name='FULLSTACK'>FULLSTACK</option>
+                <option name="DSA"> DSA</option>
+                <option name="AI and DS">AI and DS</option>
+                <option name="CYBERSECURITY AND NETWORKING">CYBERSECURITY AND NETWORKING</option>
+            </select>  
+            <br>
+            <input type="submit" value="Filter"/>
+    
+        </form>
+        <script>
+            new MultiSelectTag('Domain')  // id
+        </script>
+    </div>
+
+    <div style="width:69%;float:right;height:fit-content">
+        <form action="" method="get">
+            <input type="text" value="" placeholder="Domain" name="Searchele"/>
+            <input type="submit" value="Search"/>
+        </form>
+        <h3>Interviewer Profiles</h3>
+        {% for item in all %}
+        <p>Name:  {{item.uid.first_name}}</p>
+        <p>Exp: {{item.Experience}}</p>
+        {% for item in all %}
+        <p>Available Slot:{{item.Slot_time}}</p>
+        {%endfor%}
+        <br>
+        <button type="submit"> <a href="{% url 'view' %}?pid={{item.uid.uid_id}}">View Profile</a></button>
+        <hr>
+        {% endfor %}
+    </div>
     {% endif %}
     
     {% else %}
-    <button type="submit"> <a href="/signup">Signup</a></button>
-    <button type="submit"> <a href="/signin">Signin</a></button>
+    <button type="submit"> <a href="/signup">Register</a></button>
+    <button type="submit"> <a href="/signin">Login</a></button>
     {% endif %}
 </body>
 </html>

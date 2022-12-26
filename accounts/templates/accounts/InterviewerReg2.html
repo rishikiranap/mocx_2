@@ -5,6 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/i18n/zh-TW.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.css" integrity="sha512-p209YNS54RKxuGVBVhL+pZPTioVDcYPZPYYlKWS9qVvQwrlzxBxkR8/48SCP58ieEuBosYiPUS970ixAfI/w/A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
 </head>
 <body>
     <h2>More Details Please!!</h2>
@@ -13,14 +17,43 @@
        {% csrf_token %} 
 
         <label for="">Age</label>
-        <input type="text" id="age" name="age" placeholder="Age" required>
+        <input type="number" id="age" name="age" placeholder="Age" required>
          <br>
         <label for=''>experience</label>
-        <input type="text" id='experience' name='experience' placeholder="experience" required>
+        <input type="number" id='experience' name='experience' placeholder="experience" required>
         <br>
         <label for=''>Price</label>
-        <input type='text' id='price' name='price' placeholder="How munch you charge per mock interview?" required>
+        <input type='number' id='price' name='price' placeholder="How munch you charge per mock interview?" required>
         <br>
+        <!-- <label for="">Domain</label>
+        <select type="radio" id="Domain" name="Domain" required>
+            <option  id="Domain", name='IELTS'>IELTS</option>
+            <option id="Domain", name='FULLSTACK'>FULLSTACK</option>
+            <option id="Domain", name="DSA">DSA</option>
+            <option id="Domain", name="AI and DS">AI and DS</option>
+            <option id="Domain", name="CYBER AND NETWORK SECURITY">CYBER AND NETWORK SECURITY</option>
+        </select>    
+        <br> -->
+        <label for="">Domain:</label>
+        <textarea class="form-control" id="Domain" name="Domain" > </textarea>
+        <br>
+        <input type="checkbox" class="checkbox" id="DSA" value="DSA">
+        <label >DSA</label>
+        <br>
+        <input type="checkbox" class="checkbox" id="IELTS" value="IELTS">
+        <label >IELTS</label>
+        <br>
+        <input type="checkbox" class="checkbox" id="AI AND DS" value="AI AND DS">
+        <label >AI AND DS</label>
+        <br>
+        <input type="checkbox" class="checkbox" id="FULLSTACK" value="FULLSTACK">
+        <label >FULLSTACK</label>
+        <br>
+        <input type="checkbox" class="checkbox" id="CYBER SECURITY" value="CYBER SECURITY">
+        <label >CYBER SECURITY</label>
+        <br>
+
+        
         <label >About Me</label>
             <textarea class="form-control" id="about_me" name="about_me" rows="3" placeholder="Tell about your Education Qualifications, Certifications...." maxlength="200" required></textarea>
         <br>
@@ -29,5 +62,18 @@
         <br>
         <button type="submit">submit</button>
     </form>
+    <script>
+        $(document).ready(function(){
+            $('.checkbox').click(function(){
+                var text="";
+                $('.checkbox:checked').each(function(){
+                    text+=$(this).val()+',';
+
+                });
+                text=text.substring(0,text.length-1)
+                $('#Domain').val(text);
+            });
+        });
+    </script>
 </body>
 </html>

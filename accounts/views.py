@@ -9,9 +9,11 @@ from .models import BasicAccount,IntervieweeAccount,InterviewerAccount
 from .backend import EmailBackend
 from mocx_2 import settings
 from django.core.mail import send_mail
+import django_filters
 # Create your views here.
 
 def home(request):
+    
     
      #Check The Interviewer filled all the deatils in InterviewerReg2
      #Better to Use boolean here!!!!!
@@ -26,7 +28,47 @@ def home(request):
     elif IntervieweeAccount.Res_city is None:
         return redirect('IntervieweeReg')
     else:
-     return render(request,"accounts/index.html")  
+
+        if request.method=='GET':
+            
+            st=request.GET.getlist('Domain')
+            print(st)
+            print(len(st))
+            sea=request.GET.get('Searchele')
+            print(sea)
+            all=InterviewerAccount.objects.all()
+            if len(st)==0 and sea==None:
+                all=InterviewerAccount.objects.all() 
+                
+                for i in all:
+                    print(i.Domain)
+            elif len(st)!=0 and sea==None:
+                print(st)
+                all=InterviewerAccount.objects.filter(Domain__icontains=st[0])
+                print(all)
+                for i in st:
+                    tmp=InterviewerAccount.objects.filter(Domain__icontains=i)
+                    all=all|tmp
+                    print(all)
+            elif len(st)==0 and sea!=None:
+                print(sea)
+                all=InterviewerAccount.objects.filter(Domain__icontains=sea)
+
+            else:
+                all=InterviewerAccount.objects.filter(Domain__icontains=st[0])
+                for i in st:
+                    tmp=InterviewerAccount.objects.filter(Domain__icontains=i)
+                    all=all|tmp
+                print(sea)
+                all=all.intersection(InterviewerAccount.objects.filter(Domain__icontains=sea))
+
+
+
+
+                
+                
+
+    return render(request,"accounts/index.html",{'all':all})  
 
 def signin(request):
     if request.method == "POST":
@@ -37,9 +79,12 @@ def signin(request):
     
         if user is not None:
             login(request, user)
-            schdeules = InterviewerAccount.objects.all
-            check = Schedules.objects.all
-            return render(request, "accounts/index.html",{'all':schdeules})
+
+            schdeules = InterviewerAccount.objects.all()
+    
+            check = Schedules.objects.all()
+            return redirect('home')
+            #return render(request,"accounts/index.html",{'all':schdeules})
                 
         else:
             messages.error(request, "Invalid User")
@@ -162,13 +207,13 @@ def InterviewerReg1(request):
             from_email = settings.EMAIL_HOST_USER
             to_list = [user.email]
             send_mail(subject, message, from_email, to_list, fail_silently=True) #Send mail to the Registered Users!
-            
-            send_mail( # send one to ourselves as well when a new user registers
-                         email_sub,
-                         "has registered for an account, see subject",
-                         'noreply@mocx.in',
-                        ['mocx.mr@gmail.com'] 
-                     )
+             # send one to ourselves as well when a new user registers
+           # send_mail(
+                         #email_sub,
+                        # "has registered for an account, see subject",
+                        # 'noreply@mocx.in',
+                       # ['mocx.mr@gmail.com'] 
+                    # )
             login(request, user)
             return redirect('InterviewerReg2')
     return render(request,"accounts/InterviewerReg1.html")
@@ -181,6 +226,7 @@ def InterviewerReg2(request):
         age = request.POST['age']
         experience = request.POST['experience']
         price = request.POST['price']
+        domain=request.POST.get("Domain")
         about_me = request.POST['about_me']
         linkedin = request.POST['linkedin']
         
@@ -188,6 +234,7 @@ def InterviewerReg2(request):
         interviewer.Age = age
         interviewer.Experience = experience
         interviewer.Price = price
+        interviewer.Domain = domain
         interviewer.About_me = about_me
         interviewer.Linkedin = linkedin
         interviewer.save()

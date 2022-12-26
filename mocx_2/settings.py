@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts',
     'scheduling',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -87,7 +88,7 @@ WSGI_APPLICATION = 'mocx_2.wsgi.application'
 DATABASES =  {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'postgres-10', 
+            'NAME': 'postgres-14', 
             'USER': 'postgres',
             'PASSWORD': 'admin',
             'HOST': '127.0.0.1',
