@@ -233,6 +233,7 @@ def confirm(request):
     if request.method == "POST":
         context = {}
         Student_uid = request.POST.get("ee_id")
+        Interviewer_uid = request.POST.get("er_id")
         Interviewer_Slot = request.POST.get("slot_time")
         slot_id = request.POST.get("slot_id")
         ee_name = request.POST.get("ee_name")
@@ -249,7 +250,7 @@ def confirm(request):
         payment = client.order.create({'amount':int_price , 'currency':'INR' , 'payment_capture': 1})
         client.set_app_details({"title" : "MocX", "version" : "1.3.8"})
         
-        scheduled = Scheduled.objects.create(Student_uid_id=Student_uid, Interviewer_Slot_id=slot_id)
+        scheduled = Scheduled.objects.create(Student_uid_id=Student_uid, Interviewer_Slot_id=slot_id, uid_id=Interviewer_uid)
         scheduled.razor_pay_order_id = payment['id']
         scheduled.save()
         
@@ -301,6 +302,11 @@ def save_scheduled(request):
         
     return render(request,"accounts/confirmation.html")
 
+def my_schedules(request):
+    sch = Scheduled.objects.filter(Student_uid_id = request.user.uid_id)
+    
+    return render(request,"accounts/my_schedules.html",{"al":sch})
+
     
 @login_required
 def delete(request, id): 
@@ -309,3 +315,4 @@ def delete(request, id):
      dele.delete()
      return redirect('home')
         
+

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Confirmed Schedules</title>
+   </head>
+   <body>
+    <h2>Confirmed Schedules</h2>
+     {% for items in a%}
+       Name of the Student:{{ items.Student_uid.uid.first_name }}<br>
+       Slot : {{items.Interviewer_Slot.Slot_time}}<br>
+       Payment : {{ items.Payment }}
+       <hr>
+     {% endfor%}
+     
+      </form>
+   </body>
+</html>

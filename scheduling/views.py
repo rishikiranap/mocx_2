@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from accounts.models import InterviewerAccount,BasicAccount
-from .models import Schedules
+from .models import Schedules,Scheduled
 from accounts.backend import EmailBackend
 from mocx_2 import settings
 from django.core.mail import send_mail
@@ -74,6 +74,13 @@ def schedules_list(request):
     #if schedules.Slot_time < time_now:
         #delete(schedules)
     return render(request,"scheduling/schedules_list.html",{'all':schedules})
+
+#List the Confirmed Schedules to the interviewer after the payment is done!!!
+def scheduled_list(request):
+    scheduled = Scheduled.objects.filter(uid_id = request.user.uid_id)
+    
+    return render(request,"scheduling/scheduled_list.html",{"a":scheduled})
+
 
 #Deleting The Created Slots By Interviewer By Deleting with reference to id(pk) of the Slot created.
 @login_required   

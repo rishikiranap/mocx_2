@@ -42,6 +42,7 @@ class Scheduled(models.Model):
         ("D","Declined"),
         
     ]
+    uid = models.ForeignKey(InterviewerAccount, on_delete=models.CASCADE)
     Student_uid = models.ForeignKey(IntervieweeAccount, on_delete=models.CASCADE)
     Interviewer_Slot = models.OneToOneField(Schedules,unique=False, on_delete=models.CASCADE)
     Payment = models.CharField(max_length=1, choices=PAYMENT, default="P")
