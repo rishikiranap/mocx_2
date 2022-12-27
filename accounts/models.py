@@ -105,7 +105,7 @@ class InterviewerAccount(models.Model):
     Experience = models.PositiveSmallIntegerField(default=15)
     Price = models.PositiveSmallIntegerField(default=1520)
     #Domain= models.CharField(max_length=60,blank=True,null=True, choices=DOMAIN)
-    Domain=models.CharField(max_length=100)
+    Domain=models.CharField(max_length=100,default="null")
     About_me = models.CharField(max_length=200, null=True, blank=True)
     Linkedin = models.URLField(max_length=200, blank=True)
     profile_image = models.ImageField(upload_to='pics', default='dafault.svg')
