@@ -11,16 +11,9 @@ from mocx_2 import settings
 from django.contrib.auth.decorators import login_required
 import razorpay
 from django.core.mail import send_mail
-from django.conf import settings
-
 # Create your views here.
 
 def home(request):
-    context ={}
-    schdeules = InterviewerAccount.objects.all
-    check = Schedules.objects.all
-    context['all']=schdeules
-    context['dates']=check
     
      #Check The Interviewer filled all the deatils in InterviewerReg2
      #Better to Use boolean here!!!!!
@@ -35,7 +28,7 @@ def home(request):
     elif IntervieweeAccount.Res_city is None:
         return redirect('IntervieweeReg')
     else:
-     return render(request,"accounts/index.html",context)  
+     return render(request,"accounts/index.html")  
 
 def signin(request):
     if request.method == "POST":
@@ -46,9 +39,12 @@ def signin(request):
     
         if user is not None:
             login(request, user)
-            schdeules = InterviewerAccount.objects.all
-            check = Schedules.objects.all
-            return render(request, "accounts/index.html",{'all':schdeules})
+
+            schdeules = InterviewerAccount.objects.all()
+    
+            check = Schedules.objects.all()
+            return redirect('home')
+            #return render(request,"accounts/index.html",{'all':schdeules})
                 
         else:
             messages.error(request, "Invalid User")
@@ -171,13 +167,13 @@ def InterviewerReg1(request):
             from_email = settings.EMAIL_HOST_USER
             to_list = [user.email]
             send_mail(subject, message, from_email, to_list, fail_silently=True) #Send mail to the Registered Users!
-            
-            send_mail( # send one to ourselves as well when a new user registers
-                         email_sub,
-                         "has registered for an account, see subject",
-                         'noreply@mocx.in',
-                        ['mocx.mr@gmail.com'] 
-                     )
+             # send one to ourselves as well when a new user registers
+           # send_mail(
+                         #email_sub,
+                        # "has registered for an account, see subject",
+                        # 'noreply@mocx.in',
+                       # ['mocx.mr@gmail.com'] 
+                    # )
             login(request, user)
             return redirect('InterviewerReg2')
     return render(request,"accounts/InterviewerReg1.html")
@@ -190,6 +186,7 @@ def InterviewerReg2(request):
         age = request.POST['age']
         experience = request.POST['experience']
         price = request.POST['price']
+        domain=request.POST.get("Domain")
         about_me = request.POST['about_me']
         linkedin = request.POST['linkedin']
         
@@ -197,6 +194,7 @@ def InterviewerReg2(request):
         interviewer.Age = age
         interviewer.Experience = experience
         interviewer.Price = price
+        interviewer.Domain = domain
         interviewer.About_me = about_me
         interviewer.Linkedin = linkedin
         interviewer.save()

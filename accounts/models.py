@@ -5,6 +5,7 @@ import uuid
 
 
 
+
 class manager(BaseUserManager):
     def create_user(self, email, password, **kwargs):
         
@@ -50,7 +51,7 @@ class BasicAccount(AbstractBaseUser, PermissionsMixin):
     is_superuser = models.BooleanField(default=False)
     phone = models.CharField(max_length=13, blank=True, null=True)
     last_name = models.CharField(max_length=30,blank=True, null=True)
-    first_name = models.CharField(max_length=30,blank=True, null=True, unique=True)
+    first_name = models.CharField(max_length=30,blank=True, null=True)
     is_interviewer = models.BooleanField(default=False,blank=True,null=True)
 
     USERNAME_FIELD = "email"
@@ -66,6 +67,15 @@ OCCUPATION=(
     ('STUDENT', 'STUDENT'),
     ('JOB', 'JOB')
 )
+
+
+DOMAIN=(
+    ('DSA','DSA'),
+    ('FULLSTACK','FULLSTACK'),
+    ('IELTS','IELTS'),
+    ('AI AND DS','AI AND DS'),
+    ('CYBER AND NETWORK SECURITY','CYBER AND NETWORK SECURITY')
+)
     
 class IntervieweeAccount(models.Model):
     
@@ -79,7 +89,7 @@ class IntervieweeAccount(models.Model):
     Institute_name = models.CharField(max_length=60, blank=True, null=True)
     State = models.CharField(max_length=40, blank=True, null=True)
     City = models.CharField(max_length=40, blank=True, null=True)
-    Year_of_study = models.CharField(max_length=60, blank=True, null=True)
+    Year_of_study = models.PositiveIntegerField(default=2023)
     Residence = models.CharField(max_length=60, blank=True, null=True)
     Res_city = models.CharField(max_length=60, blank=True, null=True)
 
@@ -91,9 +101,11 @@ class IntervieweeAccount(models.Model):
 class InterviewerAccount(models.Model):
     
     uid = models.OneToOneField(BasicAccount, on_delete=models.CASCADE, primary_key=True)
-    Age = models.CharField(max_length=10, null=True, blank=True)
-    Experience = models.CharField(max_length=40, null=True, blank=True)
-    Price = models.CharField(max_length=30, null=True, blank=True)
+    Age = models.PositiveSmallIntegerField(default=50)
+    Experience = models.PositiveSmallIntegerField(default=15)
+    Price = models.PositiveSmallIntegerField(default=1520)
+    #Domain= models.CharField(max_length=60,blank=True,null=True, choices=DOMAIN)
+    Domain=models.CharField(max_length=100,default="null")
     About_me = models.CharField(max_length=200, null=True, blank=True)
     Linkedin = models.URLField(max_length=200, blank=True)
     profile_image = models.ImageField(upload_to='pics', default='dafault.svg')
