@@ -38,12 +38,14 @@
     {% if user.is_interviewer %} 
     <button type="submit"> <a href="/add_slot">Add slot</a></button>
     <button type="submit"> <a href="/signout">Logout</a></button>
+    <button type="submit"> <a href="">scheduled tests</a></button>
     {% endif %}
 
 <!-- If the user is not Interviewer and is Interviewee Show available slots -->
 
     {% if not user.is_interviewer%}
     <button type="submit"> <a href="/signout">Logout</a></button>
+    <button type="submit"> <a href="">my schedules</a></button>
     <div style="width:39%;height:auto;float:left">
         <form action="" method="get">
             <!-- <input type="text" value="" placeholder="Domain" name="Domain"/> -->
