@@ -28,7 +28,42 @@ def home(request):
     elif IntervieweeAccount.Res_city is None:
         return redirect('IntervieweeReg')
     else:
-     return render(request,"accounts/index.html")  
+         
+
+        if request.method=='GET':
+            
+            st=request.GET.getlist('Domain')
+            print(st)
+            print(len(st))
+            sea=request.GET.get('Searchele')
+            print(sea)
+            all=InterviewerAccount.objects.all()
+            if len(st)==0 and sea==None:
+                all=InterviewerAccount.objects.all() 
+                
+                for i in all:
+                    print(i.Domain)
+            elif len(st)!=0 and sea==None:
+                print(st)
+                all=InterviewerAccount.objects.filter(Domain__icontains=st[0])
+                print(all)
+                for i in st:
+                    tmp=InterviewerAccount.objects.filter(Domain__icontains=i)
+                    all=all|tmp
+                    print(all)
+            elif len(st)==0 and sea!=None:
+                print(sea)
+                all=InterviewerAccount.objects.filter(Domain__icontains=sea)
+
+            else:
+                all=InterviewerAccount.objects.filter(Domain__icontains=st[0])
+                for i in st:
+                    tmp=InterviewerAccount.objects.filter(Domain__icontains=i)
+                    all=all|tmp
+                print(sea)
+                all=all.intersection(InterviewerAccount.objects.filter(Domain__icontains=sea))
+
+    return render(request,"accounts/index.html",{'all':all})  
 
 def signin(request):
     if request.method == "POST":
