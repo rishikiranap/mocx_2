@@ -77,7 +77,7 @@ def schedules_list(request):
 
 #List the Confirmed Schedules to the interviewer after the payment is done!!!
 def scheduled_list(request):
-    scheduled = Scheduled.objects.filter(uid_id = request.user.uid_id)
+    scheduled = Scheduled.objects.filter(Interviewer_uid_id = request.user.uid_id)
     
     return render(request,"scheduling/scheduled_list.html",{"a":scheduled})
 

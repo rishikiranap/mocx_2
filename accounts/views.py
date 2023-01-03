@@ -283,7 +283,7 @@ def confirm(request):
         payment = client.order.create({'amount':int_price , 'currency':'INR' , 'payment_capture': 1})
         client.set_app_details({"title" : "MocX", "version" : "1.3.8"})
         
-        scheduled = Scheduled.objects.create(Student_uid_id=Student_uid, Interviewer_Slot_id=slot_id, uid_id=Interviewer_uid)
+        scheduled = Scheduled.objects.create(Student_uid_id=Student_uid, Interviewer_Slot_id=slot_id, Interviewer_uid_id=Interviewer_uid)
         scheduled.razor_pay_order_id = payment['id']
         scheduled.save()
         
@@ -336,9 +336,9 @@ def save_scheduled(request):
     return render(request,"accounts/confirmation.html")
 
 def my_schedules(request):
-    sch = Scheduled.objects.filter(Student_uid_id = request.user.uid_id)
+    show_schedules = Scheduled.objects.filter(Student_uid_id = request.user.uid_id)
     
-    return render(request,"accounts/my_schedules.html",{"al":sch})
+    return render(request,"accounts/my_schedules.html",{"all":show_schedules})
 
     
 @login_required

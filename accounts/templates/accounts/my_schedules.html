@@ -6,8 +6,8 @@
    <body>
     <h2>My Schedules</h2>
     
-     {% for items in al%}
-       Name of the Interviewer:{{ items.uid.uid.first_name }}<br>
+     {% for items in all%}
+       Name of the Interviewer:{{ items.Interviewer_uid.uid.first_name }}<br>
        Slot : {{items.Interviewer_Slot.Slot_time}}<br>
        Payment : {{ items.Payment }}
        <hr>
