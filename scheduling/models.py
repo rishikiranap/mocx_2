@@ -37,27 +37,27 @@ class Schedules(models.Model):
     
 class Scheduled(models.Model):
     PAYMENT =[
-        ("S","Successful"),
-        ("P","Pending"),
-        ("D","Declined"),
+        ("Successful","Successful"),
+        ("Pending","Pending"),
+        ("Declined","Declined"),
         
     ]
     Interviewer_uid = models.ForeignKey(InterviewerAccount, on_delete=models.CASCADE)
     Student_uid = models.ForeignKey(IntervieweeAccount, on_delete=models.CASCADE)
     Interviewer_Slot = models.OneToOneField(Schedules,unique=False, on_delete=models.CASCADE)
-    Payment = models.CharField(max_length=1, choices=PAYMENT, default="P")
+    Payment = models.CharField(max_length=20, choices=PAYMENT, default="P")
     razor_pay_order_id = models.CharField(max_length=100,null=True,blank=True)
     razor_pay_payment_id = models.CharField(max_length=100,null=True,blank=True)
     razor_pay_payment_signature = models.CharField(max_length=100,null=True,blank=True)
       
       
     def change_to_Successful(self):
-        self.Payment = "S"
+        self.Payment = "Successful"
         self.save()
 
     
     def change_to_declined(self):
-        self.Payment = "D"
+        self.Payment = "Declined"
         self.save()
         
     def __str__(self):
