@@ -319,7 +319,7 @@ def pay_success(request):
      
      #Send email after Interviewee made payment successful!!
      subject = "Payment Successfull!"
-     message = "Hello Team, \n\n\n" + 'Interviewee:  ' + scheduled.Student_uid.uid.first_name+'  ' + 'payment was successfull!! \n' +'with interviewer:  '+ scheduled.Interviewer_Slot.uid.uid.first_name +"\n"+"for the slot time and date:  "+str(scheduled.Interviewer_Slot.Slot_time)+'\n\n' +'Please Verify!!!'
+     message = "Hello Team, \n\n\n" + 'Interviewee Name:  ' + scheduled.Student_uid.uid.first_name+'  ' + 'payment was successfull!! \n\n' +'with interviewer:  '+ scheduled.Interviewer_Slot.uid.uid.first_name +"\n\n"+"for the slot time and date:  "+str(scheduled.Interviewer_Slot.Slot_time)+'\n\n' +'Please Verify!!!'
      from_email = settings.EMAIL_HOST_USER
      to_list = ["rishikiranap@gmail.com"]
      send_mail(subject, message, from_email, to_list, fail_silently=True) #Send mail to the Registered Users!
